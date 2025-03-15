@@ -57,7 +57,7 @@ export default function Home() {
               "TASARLA, ÜRET, UYGULA"
             </div>
             <div className="inline-block border-2 border-blue-500 px-6 py-3 text-lg font-bold text-gray-800">
-              %100 MADE IN TURKİYE
+              %100 MADE IN TÜRKİYE
             </div>
           </div>
         </div>
