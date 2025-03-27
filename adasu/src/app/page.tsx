@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Navbar from '@/app/components/navbar';
 import Footer from "./components/footer";
-import WorldMap from "./components/map";
 
 export default function Home() {
   const [isProductsOpen, setIsProductsOpen] = useState(false);
@@ -62,7 +61,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <WorldMap />
       <Footer />
     </div>
   );

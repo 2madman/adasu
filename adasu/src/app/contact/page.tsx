@@ -229,7 +229,7 @@ export default function Contact() {
                     <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">Bize Ulaşın</h2>
                     <div className="h-96 bg-gray-300 rounded-lg overflow-hidden">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3019.0523456456456!2d29.123456789012345!3d40.123456789012345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDA3JzM0LjQiTiAyOcKwMDcnMzQuNCJF!5e0!3m2!1str!2str!4v1615123456789!5m2!1str!2str"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3017.5733183839283!2d29.39089507596042!3d40.84350257137707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cadc1a8d6c8e7f%3A0x681d891e5d2e31f0!2sAkse%2C%20471.%20Sk.%20No%3A8%2C%2041420%20%C3%87ay%C4%B1rova%2FKocaeli!5e0!3m2!1str!2str!4v1718458825673!5m2!1str!2str"
                             width="100%"
                             height="100%"
                             style={{ border: 0 }}
