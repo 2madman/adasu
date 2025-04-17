@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../../firebase/clientApp';
-import { useParams } from 'next/navigation';
+import { db } from '../../../../../firebase/clientApp';
+import { useParams, useRouter } from 'next/navigation';
 import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 interface Product {
     id: string;
@@ -16,7 +17,7 @@ interface Product {
     imageUrl?: string;
 }
 
-export default function Product() {
+export default function UrunlerDetaySayfasi() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -24,7 +25,10 @@ export default function Product() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
     const params = useParams();
+    const router = useRouter();
     const productId = params.productId as string;
+    const productName = params.productName as string;
+    const { t } = useLanguage();
 
     // Function to get array of image URLs from the imageUrl string
     const getImageUrls = (imageUrlString?: string): string[] => {
@@ -111,11 +115,11 @@ export default function Product() {
                     setProduct(productData);
                 } else {
                     console.log("No product found with this ID");
-                    setError(`Product with ID ${productId} not found`);
+                    setError(`Sayfa Bulunamadı`);
                 }
             } catch (error) {
                 console.error("Error fetching product: ", error);
-                setError(`Failed to fetch product: ${error instanceof Error ? error.message : String(error)}`);
+                setError(`Ürün yüklenirken hata oluştu: ${error instanceof Error ? error.message : String(error)}`);
             } finally {
                 setLoading(false);
             }
@@ -124,28 +128,40 @@ export default function Product() {
         if (productId) {
             fetchProduct();
         } else {
-            setError("Product ID is missing");
+            setError("Ürün ID'si eksik");
             setLoading(false);
         }
     }, [productId]);
 
-    // Display error if there is one
+
     if (error) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 p-6">
-                <div className="max-w-3xl mx-auto bg-red-50 border border-red-200 rounded-lg p-8 shadow-md">
-                    <h1 className="text-2xl font-bold text-red-600 mb-4">Ürün Yüklenirken Hata</h1>
-                    <p className="text-red-500 mb-2">{error}</p>
-                    <p className="text-gray-600">Daha fazla detay için konsolu kontrol edin.</p>
+            <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col">
+                <Navbar />
+                <div className="flex-grow flex items-center justify-center py-8">
+                    <div className="max-w-3xl w-full mx-auto bg-white rounded-xl shadow-xl overflow-hidden border border-blue-100 my-8 p-10 text-center">
+                        <h1 className="text-3xl font-bold text-gray-700 mb-4">{t('notfound.title')}</h1>
+                        <p className="text-gray-600 mb-6">{t('notfound.message')}</p>
+                        <button 
+                            onClick={() => router.push(`/products/${productName}`)}
+                            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors duration-300 font-medium"
+                        >
+                            {t('notfound.return')}
+                        </button>
+                    </div>
                 </div>
+                <Footer />
             </div>
         );
     }
 
+        
+    
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50">
+        <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col">
             <Navbar />
-            <div className="max-w-5xl mx-auto  mt-6">
+            <div className="flex-grow max-w-5xl mx-auto mt-6">
                 <h1 className="text-3xl font-bold text-blue-700 mb-8 border-b-2 border-blue-300 pb-2 drop-shadow-sm">
                     Ürün Detayları
                 </h1>
@@ -207,131 +223,90 @@ export default function Product() {
                                     )}
 
                                     {product.summary && (
-                                        <div className="mb-8 bg-blue-50 p-5 rounded-lg border-l-4 border-blue-400 shadow-sm">
+                                        <div className="mb-8 p-5 rounded-lg border border-blue-200 shadow-sm">
                                             <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
                                                 <span className="mr-2"></span>Özet
                                             </h3>
-                                            <div className="text-gray-700 prose">
+                                            <p className="text-gray-700 leading-relaxed">
                                                 {product.summary?.split('\\n').map((line, index, array) => (
                                                     <span key={index}>
                                                         {line}
                                                         {index < array.length - 1 && <br />}
                                                     </span>
                                                 ))}
-                                            </div>
+                                            </p>
                                         </div>
                                     )}
                                 </div>
 
-                                {/* Right column - Product image */}
-                                <div className="md:w-1/3 flex flex-col">
-                                    <div className="sticky top-6 bg-white p-4 rounded-lg border border-blue-100 shadow-sm">
-                                        {product.imageUrl ? (
-                                            <>
-                                                {(() => {
-                                                    const imageUrls = getImageUrls(product.imageUrl);
-                                                    return imageUrls.length > 0 ? (
-                                                        <div className="relative">
+                                {/* Right column - Product images */}
+                                <div className="md:w-1/2 lg:w-2/5">
+                                    {product.imageUrl ? (
+                                        <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                                            {(() => {
+                                                const imageUrls = getImageUrls(product.imageUrl);
+                                                if (imageUrls.length === 0) return null;
+
+                                                return (
+                                                    <div className="relative">
+                                                        <img
+                                                            src={imageUrls[currentImageIndex]}
+                                                            alt={`${product.name || 'Ürün görseli'} ${currentImageIndex + 1}`}
+                                                            className="w-full h-auto cursor-pointer object-cover aspect-square"
+                                                            onClick={() => openImageModal(currentImageIndex)}
+                                                        />
+
+                                                        {imageUrls.length > 1 && (
+                                                            <div className="absolute bottom-4 right-4 bg-white/70 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-gray-700 shadow-sm">
+                                                                {currentImageIndex + 1} / {imageUrls.length}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })()}
+
+                                            {/* Thumbnail navigation */}
+                                            {(() => {
+                                                const imageUrls = getImageUrls(product.imageUrl);
+                                                if (imageUrls.length <= 1) return null;
+
+                                                return (
+                                                    <div className="flex overflow-x-auto p-2 gap-2 bg-gray-50">
+                                                        {imageUrls.map((url, index) => (
                                                             <div
-                                                                className="aspect-square overflow-hidden rounded-lg mb-4 cursor-pointer"
-                                                                onClick={() => openImageModal(currentImageIndex)}
+                                                                key={index}
+                                                                className={`w-16 h-16 flex-shrink-0 rounded overflow-hidden cursor-pointer border-2 ${
+                                                                    currentImageIndex === index
+                                                                        ? 'border-blue-500'
+                                                                        : 'border-transparent'
+                                                                }`}
+                                                                onClick={() => setCurrentImageIndex(index)}
                                                             >
                                                                 <img
-                                                                    src={imageUrls[currentImageIndex]}
-                                                                    alt={`${product.name || 'Ürün görseli'} ${currentImageIndex + 1}`}
-                                                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                                                    src={url}
+                                                                    alt={`${product.name || 'Ürün'} küçük görsel ${index + 1}`}
+                                                                    className="w-full h-full object-cover"
                                                                 />
                                                             </div>
-
-                                                            {imageUrls.length > 1 && (
-                                                                <>
-                                                                    {/* Image navigation controls */}
-                                                                    <div className="absolute top-1/2 left-0 right-0 flex justify-between transform -translate-y-1/2 px-2">
-                                                                        <button
-                                                                            onClick={() => prevImage(imageUrls)}
-                                                                            className="bg-white/80 hover:bg-white text-blue-600 rounded-full p-1 shadow-md transition-all"
-                                                                            aria-label="Önceki görsel"
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                                                            </svg>
-                                                                        </button>
-                                                                        <button
-                                                                            onClick={() => nextImage(imageUrls)}
-                                                                            className="bg-white/80 hover:bg-white text-blue-600 rounded-full p-1 shadow-md transition-all"
-                                                                            aria-label="Sonraki görsel"
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
-
-                                                                    {/* Image indicator dots */}
-                                                                    <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-1.5">
-                                                                        {imageUrls.map((_, index) => (
-                                                                            <button
-                                                                                key={index}
-                                                                                onClick={() => setCurrentImageIndex(index)}
-                                                                                className={`h-2 w-2 rounded-full transition-all ${currentImageIndex === index
-                                                                                    ? 'bg-blue-600 scale-125'
-                                                                                    : 'bg-gray-300 hover:bg-gray-400'
-                                                                                    }`}
-                                                                                aria-label={`Görsel ${index + 1}`}
-                                                                            />
-                                                                        ))}
-                                                                    </div>
-                                                                </>
-                                                            )}
-                                                        </div>
-                                                    ) : (
-                                                        <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-                                                            <p className="text-gray-400 text-sm">Görsel bulunamadı</p>
-                                                        </div>
-                                                    );
-                                                })()}
-
-                                                {/* Thumbnail gallery for multiple images */}
-                                                {(() => {
-                                                    const imageUrls = getImageUrls(product.imageUrl);
-                                                    return imageUrls.length > 1 && (
-                                                        <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
-                                                            {imageUrls.map((url, index) => (
-                                                                <button
-                                                                    key={index}
-                                                                    onClick={() => setCurrentImageIndex(index)}
-                                                                    className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${currentImageIndex === index
-                                                                        ? 'border-blue-500 shadow-md'
-                                                                        : 'border-transparent hover:border-blue-300'
-                                                                        }`}
-                                                                >
-                                                                    <img
-                                                                        src={url}
-                                                                        alt={`Küçük görsel ${index + 1}`}
-                                                                        className="w-full h-full object-cover cursor-pointer"
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation(); // Prevent triggering the button's onClick
-                                                                            openImageModal(index);
-                                                                        }}
-                                                                    />
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                })()}
-                                            </>
-                                        ) : (
-                                            <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-4">
-                                                <p className="text-gray-400 text-sm">Görsel bulunamadı</p>
-                                            </div>
-                                        )}
-                                    </div>
+                                                        ))}
+                                                    </div>
+                                                );
+                                            })()}
+                                        </div>
+                                    ) : (
+                                        <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200">
+                                            <p className="text-gray-500 text-sm">Ürün görseli bulunamadı</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="mt-10 flex justify-end">
-                                <button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-medium">
-                                    Ürünlere Dön
+                                <button 
+                                    onClick={() => router.push(`/products/${productName}`)}
+                                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-medium"
+                                >
+                                    {t('notfound.return')}
                                 </button>
                             </div>
                         </div>
@@ -427,4 +402,4 @@ export default function Product() {
             <Footer />
         </div>
     );
-}
+} 

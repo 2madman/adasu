@@ -1,43 +1,73 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function AboutPage() {
+    const { t, language } = useLanguage();
+    
+    // Handle language-based navigation
+    useEffect(() => {
+        // Only run this effect once on component mount
+        const hasBeenRedirected = sessionStorage.getItem('aboutPageVisited');
+        
+        if (!hasBeenRedirected) {
+            // Mark that we've visited the page to prevent future redirects
+            sessionStorage.setItem('aboutPageVisited', 'true');
+            
+            // If they access /about directly while having 'en' in localStorage
+            if (language === 'en' && typeof window !== 'undefined') {
+                const path = window.location.pathname;
+                if (path === '/about') {
+                    window.location.href = '/en/about';
+                }
+            }
+        }
+        
+        // Cleanup function - we don't remove the flag as it should persist
+        return () => {
+            // Remove old flags for compatibility
+            sessionStorage.removeItem('redirected_about');
+            sessionStorage.removeItem('language_redirected');
+            // Don't remove aboutPageVisited as it should persist
+        };
+    }, []); // Empty dependency array ensures it only runs once
+    
     return (
         <div className="min-h-screen flex flex-col bg-white">
             <Navbar />
 
             <div className="pt-28 pb-16 bg-gray-100">
                 <div className="container mx-auto px-6">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">Hakkımızda</h1>
+                    <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">{t('about.title')}</h1>
 
                     <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
                         <section className="mb-10">
-                            <h2 className="text-2xl font-bold text-blue-800 mb-4">Nükleer ve radyasyon</h2>
+                            <h2 className="text-2xl font-bold text-blue-800 mb-4">{t('about.nuclear.title')}</h2>
                             <p className="text-gray-700 mb-6 leading-relaxed">
-                                Tıp, Araştırma, Endüstri ve Nükleer güvenlik alanları için radyasyon koruma çözümleri geliştiriyor, tasarlıyor ve üretiyoruz. 20 yılı aşkın deneyimine dayanan bu zorlu meslekte kapsamlı uzmanlığa sahibiz. Korumak için uzman bilgisine ihtiyacınız var, bu yüzden 20 yılı aşkın süredir sürekli olarak yenilik yapıyor, araştırıyor, tasarlıyor ve en iyi çözümleri üretiyoruz, ayrıca ürünlerimizi ve hizmetlerimizi kuruyor, dağıtıyor ve kullanıcıları eğitiyoruz.
+                                {t('about.nuclear.p1')}
                             </p>
                             <p className="text-gray-700 mb-6 leading-relaxed">
-                                En büyük önceliğimiz: mükemmellik. Hayatı, doktorların ve mühendislerin, teknisyenlerin ve araştırmacıların hayatlarını ve sizin hayatınızı korumak için mükemmellik istiyoruz.
+                                {t('about.nuclear.p2')}
                             </p>
                             <p className="text-gray-700 mb-6 leading-relaxed">
-                                Ada grup, Türkiye merkezli radyasyon koruma çözümleri tasarımcısı ve üreticisidir. Radyasyon koruması alanında küresel bir inovasyon lideri olarak, Türkiye'de yenilikçi ve sürdürülebilir ekonominin itici gücüyüz. En büyük önceliğimiz uzmanlığımızı insanlar ve çevre için kullanmak.
+                                {t('about.nuclear.p3')}
                             </p>
                         </section>
 
                         <section className="mb-10">
-                            <h2 className="text-2xl font-bold text-blue-800 mb-4">Denizcilik</h2>
+                            <h2 className="text-2xl font-bold text-blue-800 mb-4">{t('about.maritime.title')}</h2>
                             <p className="text-gray-700 mb-6 leading-relaxed">
-                                Deniz hayranları, Tekne, yat üreticileri ve sahipleri ! Ada grup kuvvetli rüzgarlara teknenizi su üstünde tutmak ve denge sağlamak için her zaman yanınızda, bunun için özel kurşun ağırlıklar üretiyoruz.
+                                {t('about.maritime.p1')}
                             </p>
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-bold text-blue-800 mb-4">İnşaat</h2>
+                            <h2 className="text-2xl font-bold text-blue-800 mb-4">{t('about.construction.title')}</h2>
                             <p className="text-gray-700 mb-6 leading-relaxed">
-                                Ada grup ülkemizde ve farklı coğrafyalarda oluşan doğal depremin etkilerini en aza indiren sismik izolatörlerin kurşun çekirdeklerini üreterek güvenlik anlamında sismik izolatör üreticilerini destek sağlıyoruz. Hastanelerin Nükleer tıp, radyoloji, radyoterapi ve Radyonuklid tedavi ünitelerini IAEA ve TAEK standartlarına uygun, ergonomi, estetik ve en önemlisi güvenliğe önem veren anahtar teslim mimari projeler tasarlıyor, üretiyor ve uyguluyoruz.
+                                {t('about.construction.p1')}
                             </p>
                         </section>
                     </div>
