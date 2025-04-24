@@ -17,7 +17,7 @@ interface DropdownProps {
 // Dropdown menu component for Products
 const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick }: DropdownProps) => {
     const { t, language } = useLanguage();
-    
+
     // Product names in Turkish and English
     const productNames = {
         tr: [
@@ -45,23 +45,22 @@ const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
             'R&D'
         ]
     };
-    
+
     // Select the appropriate product names based on the current language
     const productsToDisplay = language === 'en' ? productNames.en : productNames.tr;
-    
+
     return (
         <div
-            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-500 ease-in-out transform ${isOpen ? 'block' : ''} ${animationClass}`}
+            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass}`}
             onMouseLeave={onMouseLeave}
-            style={{ display: isOpen || animationClass.includes("opacity-0") ? "block" : "none" }}
         >
             <div className="container mx-auto px-4 py-8 flex">
                 <div className="w-2/3 pl-8 border-l border-gray-200">
                     <div className="grid grid-cols-1 gap-3">
                         {productsToDisplay.map((product, index) => (
-                            <a 
-                                key={product} 
-                                onClick={() => onProductClick(product)}
+                            <a
+                                key={product}
+                                onClick={() => onProductClick(product)} // Use the current language product name
                                 className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl cursor-pointer"
                             >
                                 <span>{product}</span>
@@ -80,7 +79,7 @@ const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
 // Dropdown menu component for Services
 const ServicesDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick }: DropdownProps) => {
     const { t, language } = useLanguage();
-    
+
     // Service names in Turkish and English
     const serviceNames = {
         tr: [
@@ -100,26 +99,29 @@ const ServicesDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
             'ARCHITECTURAL DESIGN'
         ]
     };
-    
+
     // Select the appropriate service names based on the current language
     const servicesToDisplay = language === 'en' ? serviceNames.en : serviceNames.tr;
-    
+
     return (
         <div
-            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-500 ease-in-out transform ${isOpen ? 'block' : ''} ${animationClass}`}
+            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass}`}
             onMouseLeave={onMouseLeave}
-            style={{ display: isOpen || animationClass.includes("opacity-0") ? "block" : "none" }}
         >
             <div className="container mx-auto px-4 py-8 flex">
                 <div className="w-2/3 pl-8 border-l border-gray-200">
                     <div className="grid grid-cols-1 gap-3">
                         {servicesToDisplay.map((service, index) => (
-                            <div 
-                                key={service} 
-                                className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl"
+                            <a
+                                key={service}
+                                onClick={() => onProductClick(service)} // Use the current language service name
+                                className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl cursor-pointer"
                             >
                                 <span>{service}</span>
-                            </div>
+                                <svg className="ml-2 w-8 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
                         ))}
                     </div>
                 </div>
@@ -139,13 +141,12 @@ interface LanguageDropdownProps {
 
 const LanguageDropdown = ({ isOpen, animationClass, onMouseLeave, onLanguageChange, currentLanguage }: LanguageDropdownProps) => (
     <div
-        className={`absolute top-16 right-0 bg-white/95 shadow-lg z-50 h-auto transition-all duration-500 ease-in-out transform ${isOpen ? 'block' : ''} ${animationClass} rounded-md`}
+        className={`absolute top-16 right-0 bg-white/95 shadow-lg z-50 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass} rounded-md`}
         onMouseLeave={onMouseLeave}
-        style={{ display: isOpen || animationClass.includes("opacity-0") ? "block" : "none" }}
     >
         <div className="py-2 px-4">
             {currentLanguage === 'en' ? (
-                <button 
+                <button
                     onClick={() => onLanguageChange('tr')}
                     className="flex items-center py-2 hover:opacity-80 transition-opacity"
                 >
@@ -170,14 +171,14 @@ const LanguageDropdown = ({ isOpen, animationClass, onMouseLeave, onLanguageChan
                     <span className="ml-2 text-sm font-bold text-gray-800">Türkçe</span>
                 </button>
             ) : (
-                <button 
+                <button
                     onClick={() => onLanguageChange('en')}
                     className="flex items-center py-2 hover:opacity-80 transition-opacity"
                 >
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="32" 
-                        height="32" 
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
                         viewBox="0 0 512 512"
                         className="mr-2"
                     >
@@ -218,6 +219,9 @@ export default function Navbar() {
             }, 50);
         } else {
             setProductsAnimationClass("opacity-0 -translate-y-4");
+            setTimeout(() => {
+                setIsProductsOpen(false);
+            }, 300); // Match this duration with your CSS transition duration
         }
     }, [isProductsOpen]);
 
@@ -229,6 +233,9 @@ export default function Navbar() {
             }, 50);
         } else {
             setServicesAnimationClass("opacity-0 -translate-y-4");
+            setTimeout(() => {
+                setIsServicesOpen(false);
+            }, 300); // Match this duration with your CSS transition duration
         }
     }, [isServicesOpen]);
 
@@ -240,6 +247,9 @@ export default function Navbar() {
             }, 50);
         } else {
             setLanguageAnimationClass("opacity-0 -translate-y-4");
+            setTimeout(() => {
+                setIsLanguageOpen(false);
+            }, 300); // Match this duration with your CSS transition duration
         }
     }, [isLanguageOpen]);
 
@@ -252,7 +262,7 @@ export default function Navbar() {
         // Close dropdowns
         setIsProductsOpen(false);
         setIsServicesOpen(false);
-        
+
         // Always use /products path regardless of language
         router.push(`/products/${encodeURIComponent(productName)}`);
     };
@@ -266,11 +276,11 @@ export default function Navbar() {
                         {/* Logo */}
                         <div className="flex items-center pl-4">
                             <Link href="/">
-                                <Image 
-                                    src="/images/logo.png" 
-                                    alt="Adasu Logo" 
-                                    width={180} 
-                                    height={80} 
+                                <Image
+                                    src="/images/logo.png"
+                                    alt="Adasu Logo"
+                                    width={180}
+                                    height={80}
                                     className="cursor-pointer"
                                     priority
                                 />
@@ -322,67 +332,36 @@ export default function Navbar() {
                                 </a>
                             </div>
 
-                            <Link 
-                                href={language === 'en' ? '/en/about' : '/about'} 
+                            <Link
+                                href={language === 'en' ? '/en/about' : '/about'}
                                 className="text-lg text-gray-700 hover:text-blue-500 font-bold"
                                 prefetch={false}
-                                onMouseEnter={() => {
-                                    setIsProductsOpen(false);
-                                    setIsServicesOpen(false);
-                                }}
                             >
                                 {t('nav.about')}
                             </Link>
-                            
-                            <Link 
-                                href={language === 'en' ? '/en/contact' : '/contact'} 
+
+                            <Link
+                                href={language === 'en' ? '/en/contact' : '/contact'}
                                 className="text-lg text-gray-700 hover:text-blue-500 font-bold"
                                 prefetch={false}
-                                onMouseEnter={() => {
-                                    setIsProductsOpen(false);
-                                    setIsServicesOpen(false);
-                                }}
                             >
                                 {t('nav.contact')}
                             </Link>
-                            
-                            <a 
-                                href="#" 
-                                className="text-lg text-gray-700 hover:text-blue-500 font-bold"
-                                onMouseEnter={() => {
-                                    setIsProductsOpen(false);
-                                    setIsServicesOpen(false);
-                                }}
-                            >
-                                {t('nav.media')}
-                            </a>
-                            
-                            <a 
-                                href="#" 
-                                className="text-lg text-gray-700 hover:text-blue-500 font-bold"
-                                onMouseEnter={() => {
-                                    setIsProductsOpen(false);
-                                    setIsServicesOpen(false);
-                                }}
-                            >
-                                {t('nav.documents')}
-                            </a>
+
+                            <a href="#" className="text-lg text-gray-700 hover:text-blue-500 font-bold">{t('nav.media')}</a>
+                            <a href="#" className="text-lg text-gray-700 hover:text-blue-500 font-bold">{t('nav.documents')}</a>
 
                             {/* Language selector */}
                             <div className="relative">
                                 <button
                                     onClick={() => setIsLanguageOpen(!isLanguageOpen)}
                                     className="hover:opacity-80 transition-opacity"
-                                    onMouseEnter={() => {
-                                        setIsProductsOpen(false);
-                                        setIsServicesOpen(false);
-                                    }}
                                 >
                                     {language === 'en' ? (
-                                        <svg 
-                                            xmlns="http://www.w3.org/2000/svg" 
-                                            width="36" 
-                                            height="36" 
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="36"
+                                            height="36"
                                             viewBox="0 0 512 512"
                                             className="hover:opacity-80"
                                         >
@@ -419,7 +398,7 @@ export default function Navbar() {
                                         </svg>
                                     )}
                                 </button>
-                                
+
                                 {/* Language dropdown */}
                                 <LanguageDropdown
                                     isOpen={isLanguageOpen}
