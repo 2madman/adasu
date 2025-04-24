@@ -14,7 +14,7 @@ interface Product {
     description?: string;
     technical?: string;
     summary?: string;
-    imageUrl?: string;
+    images?: string;
 }
 
 export default function UrunlerDetaySayfasi() {
@@ -33,7 +33,24 @@ export default function UrunlerDetaySayfasi() {
     // Function to get array of image URLs from the imageUrl string
     const getImageUrls = (imageUrlString?: string): string[] => {
         if (!imageUrlString) return [];
-        return imageUrlString.split('\\n').filter(url => url.trim() !== '');
+        
+        // Split on newlines and filter out empty items
+        const images = imageUrlString
+            .replace(/\r\n/g, '\n')
+            .replace(/\\n/g, '\n')
+            .split(/\n+/)
+            .filter(url => url.trim() !== '')
+            .map(img => {
+                // Handle base64 encoded images - add data:image prefix if not present
+                if (img.startsWith('data:')) {
+                    return img; // Already has data URI prefix
+                } else {
+                    // Add data URI prefix to base64 string
+                    return `data:image/jpeg;base64,${img}`;
+                }
+            });
+            
+        return images;
     };
 
     // Navigate to the next image
@@ -108,7 +125,7 @@ export default function UrunlerDetaySayfasi() {
                         description: data.description || null,
                         technical: data.technical || null,
                         summary: data.summary || null,
-                        imageUrl: data.imageUrl || null,
+                        images: data.images || null,
                     };
 
                     console.log("Processed product data:", productData);
@@ -241,10 +258,10 @@ export default function UrunlerDetaySayfasi() {
 
                                 {/* Right column - Product images */}
                                 <div className="md:w-1/2 lg:w-2/5">
-                                    {product.imageUrl ? (
+                                    {product.images ? (
                                         <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
                                             {(() => {
-                                                const imageUrls = getImageUrls(product.imageUrl);
+                                                const imageUrls = getImageUrls(product.images);
                                                 if (imageUrls.length === 0) return null;
 
                                                 return (
@@ -267,7 +284,7 @@ export default function UrunlerDetaySayfasi() {
 
                                             {/* Thumbnail navigation */}
                                             {(() => {
-                                                const imageUrls = getImageUrls(product.imageUrl);
+                                                const imageUrls = getImageUrls(product.images);
                                                 if (imageUrls.length <= 1) return null;
 
                                                 return (
@@ -321,7 +338,7 @@ export default function UrunlerDetaySayfasi() {
             </div>
 
             {/* Image Modal */}
-            {isModalOpen && product?.imageUrl && (
+            {isModalOpen && product?.images && (
                 <div
                     className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
                     onClick={handleModalClick}
@@ -340,7 +357,7 @@ export default function UrunlerDetaySayfasi() {
                         {/* Image container */}
                         <div className="bg-white/10 rounded-lg overflow-hidden">
                             {(() => {
-                                const imageUrls = getImageUrls(product.imageUrl);
+                                const imageUrls = getImageUrls(product.images);
                                 return (
                                     <div className="relative">
                                         <img
@@ -388,7 +405,7 @@ export default function UrunlerDetaySayfasi() {
                         {/* Modal image counter */}
                         <div className="text-center text-white mt-4">
                             {(() => {
-                                const imageUrls = getImageUrls(product.imageUrl);
+                                const imageUrls = getImageUrls(product.images);
                                 return imageUrls.length > 1 ? (
                                     <p className="font-medium">
                                         {modalImageIndex + 1} / {imageUrls.length}

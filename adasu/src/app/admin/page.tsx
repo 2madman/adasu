@@ -17,6 +17,8 @@ export default function AdminPage() {
   const [message, setMessage] = useState({ text: '', type: '' });
   const [selectedCategory, setSelectedCategory] = useState('');
   const [isEnglish, setIsEnglish] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [encodedImages, setEncodedImages] = useState<string[]>([]);
 
   const categories = {
     tr: [
@@ -65,7 +67,12 @@ export default function AdminPage() {
       productRequired: 'Ürün adı gereklidir',
       categoryRequired: 'Kategori seçimi gereklidir',
       success: 'Ürün başarıyla eklendi!',
-      error: 'Ürün ekleme sırasında bir hata oluştu'
+      error: 'Ürün ekleme sırasında bir hata oluştu',
+      images: 'Ürün Görselleri',
+      selectImages: 'Görselleri Seçin',
+      selectedImages: 'Seçilen görseller',
+      removeImage: 'Kaldır',
+      imageError: 'Görselleri yüklerken bir hata oluştu'
     },
     en: {
       adminLogin: 'Admin Login',
@@ -86,7 +93,12 @@ export default function AdminPage() {
       productRequired: 'Product name is required',
       categoryRequired: 'Category selection is required',
       success: 'Product added successfully!',
-      error: 'An error occurred while adding the product'
+      error: 'An error occurred while adding the product',
+      images: 'Product Images',
+      selectImages: 'Select Images',
+      selectedImages: 'Selected images',
+      removeImage: 'Remove',
+      imageError: 'An error occurred while uploading images'
     }
   };
 
@@ -162,6 +174,38 @@ export default function AdminPage() {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const filesArray = Array.from(e.target.files);
+      setSelectedImages(prev => [...prev, ...filesArray]);
+      
+      // Encode the images
+      filesArray.forEach(file => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === 'string') {
+            setEncodedImages(prevImages => [...prevImages, reader.result as string]);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => {
+      const newArray = [...prev];
+      newArray.splice(index, 1);
+      return newArray;
+    });
+    
+    setEncodedImages(prev => {
+      const newArray = [...prev];
+      newArray.splice(index, 1);
+      return newArray;
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -191,6 +235,9 @@ export default function AdminPage() {
         products: updatedProducts
       }, { merge: true });
 
+      // Join encoded images with escaped newlines
+      const imagesString = encodedImages.join(' \\n');
+
       // Also store the product details in the products collection
       const productRef = doc(collection(db, 'products'), slug);
       await setDoc(productRef, {
@@ -198,7 +245,8 @@ export default function AdminPage() {
         category: selectedCategory,
         description: description.replace(/\n/g, '\\n'),
         summary: summary.replace(/\n/g, '\\n'),
-        technical: technical.replace(/\n/g, '\\n')
+        technical: technical.replace(/\n/g, '\\n'),
+        images: imagesString
       });
 
       // Clear form fields
@@ -207,6 +255,8 @@ export default function AdminPage() {
       setSummary('');
       setTechnical('');
       setSelectedCategory('');
+      setSelectedImages([]);
+      setEncodedImages([]);
       setMessage({ text: t.success, type: 'success' });
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -368,6 +418,45 @@ export default function AdminPage() {
             className="w-full p-3 border border-gray-300 rounded text-gray-800 text-base font-medium h-36 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder={t.technical}
           />
+        </div>
+        
+        <div>
+          <label htmlFor="images" className="block text-base font-semibold text-gray-800 mb-2">
+            {t.images}
+          </label>
+          <input
+            type="file"
+            id="images"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            className="w-full p-3 border border-gray-300 rounded text-gray-800 text-base font-medium focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          />
+          
+          {selectedImages.length > 0 && (
+            <div className="mt-4">
+              <p className="font-medium mb-2">{t.selectedImages} ({selectedImages.length}):</p>
+              <div className="flex flex-wrap gap-3">
+                {selectedImages.map((image, index) => (
+                  <div key={index} className="relative">
+                    <img 
+                      src={URL.createObjectURL(image)} 
+                      alt={`Preview ${index}`}
+                      className="h-24 w-24 object-cover rounded border border-gray-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700"
+                      title={t.removeImage}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         
         <button

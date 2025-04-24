@@ -51,8 +51,9 @@ const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
     
     return (
         <div
-            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass}`}
+            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-500 ease-in-out transform ${isOpen ? 'block' : ''} ${animationClass}`}
             onMouseLeave={onMouseLeave}
+            style={{ display: isOpen || animationClass.includes("opacity-0") ? "block" : "none" }}
         >
             <div className="container mx-auto px-4 py-8 flex">
                 <div className="w-2/3 pl-8 border-l border-gray-200">
@@ -60,7 +61,7 @@ const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
                         {productsToDisplay.map((product, index) => (
                             <a 
                                 key={product} 
-                                onClick={() => onProductClick(product)} // Use the current language product name
+                                onClick={() => onProductClick(product)}
                                 className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl cursor-pointer"
                             >
                                 <span>{product}</span>
@@ -105,23 +106,20 @@ const ServicesDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
     
     return (
         <div
-            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass}`}
+            className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-500 ease-in-out transform ${isOpen ? 'block' : ''} ${animationClass}`}
             onMouseLeave={onMouseLeave}
+            style={{ display: isOpen || animationClass.includes("opacity-0") ? "block" : "none" }}
         >
             <div className="container mx-auto px-4 py-8 flex">
                 <div className="w-2/3 pl-8 border-l border-gray-200">
                     <div className="grid grid-cols-1 gap-3">
                         {servicesToDisplay.map((service, index) => (
-                            <a 
+                            <div 
                                 key={service} 
-                                onClick={() => onProductClick(service)} // Use the current language service name
-                                className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl cursor-pointer"
+                                className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl"
                             >
                                 <span>{service}</span>
-                                <svg className="ml-2 w-8 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -141,8 +139,9 @@ interface LanguageDropdownProps {
 
 const LanguageDropdown = ({ isOpen, animationClass, onMouseLeave, onLanguageChange, currentLanguage }: LanguageDropdownProps) => (
     <div
-        className={`absolute top-16 right-0 bg-white/95 shadow-lg z-50 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass} rounded-md`}
+        className={`absolute top-16 right-0 bg-white/95 shadow-lg z-50 h-auto transition-all duration-500 ease-in-out transform ${isOpen ? 'block' : ''} ${animationClass} rounded-md`}
         onMouseLeave={onMouseLeave}
+        style={{ display: isOpen || animationClass.includes("opacity-0") ? "block" : "none" }}
     >
         <div className="py-2 px-4">
             {currentLanguage === 'en' ? (
@@ -219,9 +218,6 @@ export default function Navbar() {
             }, 50);
         } else {
             setProductsAnimationClass("opacity-0 -translate-y-4");
-            setTimeout(() => {
-                setIsProductsOpen(false);
-            }, 300); // Match this duration with your CSS transition duration
         }
     }, [isProductsOpen]);
 
@@ -233,9 +229,6 @@ export default function Navbar() {
             }, 50);
         } else {
             setServicesAnimationClass("opacity-0 -translate-y-4");
-            setTimeout(() => {
-                setIsServicesOpen(false);
-            }, 300); // Match this duration with your CSS transition duration
         }
     }, [isServicesOpen]);
 
@@ -247,9 +240,6 @@ export default function Navbar() {
             }, 50);
         } else {
             setLanguageAnimationClass("opacity-0 -translate-y-4");
-            setTimeout(() => {
-                setIsLanguageOpen(false);
-            }, 300); // Match this duration with your CSS transition duration
         }
     }, [isLanguageOpen]);
 
@@ -336,6 +326,10 @@ export default function Navbar() {
                                 href={language === 'en' ? '/en/about' : '/about'} 
                                 className="text-lg text-gray-700 hover:text-blue-500 font-bold"
                                 prefetch={false}
+                                onMouseEnter={() => {
+                                    setIsProductsOpen(false);
+                                    setIsServicesOpen(false);
+                                }}
                             >
                                 {t('nav.about')}
                             </Link>
@@ -344,18 +338,45 @@ export default function Navbar() {
                                 href={language === 'en' ? '/en/contact' : '/contact'} 
                                 className="text-lg text-gray-700 hover:text-blue-500 font-bold"
                                 prefetch={false}
+                                onMouseEnter={() => {
+                                    setIsProductsOpen(false);
+                                    setIsServicesOpen(false);
+                                }}
                             >
                                 {t('nav.contact')}
                             </Link>
                             
-                            <a href="#" className="text-lg text-gray-700 hover:text-blue-500 font-bold">{t('nav.media')}</a>
-                            <a href="#" className="text-lg text-gray-700 hover:text-blue-500 font-bold">{t('nav.documents')}</a>
+                            <a 
+                                href="#" 
+                                className="text-lg text-gray-700 hover:text-blue-500 font-bold"
+                                onMouseEnter={() => {
+                                    setIsProductsOpen(false);
+                                    setIsServicesOpen(false);
+                                }}
+                            >
+                                {t('nav.media')}
+                            </a>
+                            
+                            <a 
+                                href="#" 
+                                className="text-lg text-gray-700 hover:text-blue-500 font-bold"
+                                onMouseEnter={() => {
+                                    setIsProductsOpen(false);
+                                    setIsServicesOpen(false);
+                                }}
+                            >
+                                {t('nav.documents')}
+                            </a>
 
                             {/* Language selector */}
                             <div className="relative">
                                 <button
                                     onClick={() => setIsLanguageOpen(!isLanguageOpen)}
                                     className="hover:opacity-80 transition-opacity"
+                                    onMouseEnter={() => {
+                                        setIsProductsOpen(false);
+                                        setIsServicesOpen(false);
+                                    }}
                                 >
                                     {language === 'en' ? (
                                         <svg 

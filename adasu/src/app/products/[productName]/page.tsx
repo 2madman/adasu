@@ -7,9 +7,11 @@ import { useParams, useRouter } from 'next/navigation';
 import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
 import { useLanguage } from '@/app/context/LanguageContext';
+import Image from 'next/image';
 
 interface ProductDetail {
     products: string[];
+    images?: string;
 }
 
 export default function UrunDetaySayfasi() {
@@ -19,8 +21,20 @@ export default function UrunDetaySayfasi() {
     const productName = typeof params.productName === 'string' ? decodeURIComponent(params.productName) : '';
     
     const [productDetails, setProductDetails] = useState<ProductDetail | null>(null);
+    const [productImages, setProductImages] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // Parse and extract base64 image strings
+    const parseImages = (imagesString?: string): string[] => {
+        if (!imagesString) return [];
+        return imagesString
+            .replace(/\r\n/g, '\n')
+            .replace(/\\n/g, '\n')
+            .split(/\n+/)
+            .filter(Boolean)
+            .map(img => img.trim());
+    };
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -55,8 +69,14 @@ export default function UrunDetaySayfasi() {
                         
                         
                         setProductDetails({
-                            products: productsList
+                            products: productsList,
+                            images: data.images || ''
                         });
+                        
+                        // Parse and set images if they exist
+                        if (data.images) {
+                            setProductImages(parseImages(data.images));
+                        }
                     } else {
                         setError(language === 'en' ? 'Product information not found' : 'Ürün bilgisi bulunamadı');
                     }
@@ -127,11 +147,25 @@ export default function UrunDetaySayfasi() {
                 {productDetails && productDetails.products.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
                         {productDetails.products.map((product, index) => {
+                            // Get image for this product if available
+                            const productImage = productImages[index] || null;
+                            
                             return (
                                 <div 
                                     key={index} 
                                     className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300"
                                 >
+                                    {/* Display image if available */}
+                                    {productImage && (
+                                        <div className="h-48 overflow-hidden bg-gray-100">
+                                            <img 
+                                                src={productImage.startsWith('data:') ? productImage : `data:image/jpeg;base64,${productImage}`} 
+                                                alt={product}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    )}
+                                    
                                     <div className="p-6">
                                         <h3 className="text-lg font-semibold text-gray-800 mb-4 min-h-[3rem] line-clamp-2">{product}</h3>
                                         <button 
