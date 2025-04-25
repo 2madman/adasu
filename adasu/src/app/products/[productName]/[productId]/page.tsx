@@ -33,7 +33,7 @@ export default function UrunlerDetaySayfasi() {
     // Function to get array of image URLs from the imageUrl string
     const getImageUrls = (imageUrlString?: string): string[] => {
         if (!imageUrlString) return [];
-        
+
         // Split on newlines and filter out empty items
         const images = imageUrlString
             .replace(/\r\n/g, '\n')
@@ -49,7 +49,7 @@ export default function UrunlerDetaySayfasi() {
                     return `data:image/jpeg;base64,${img}`;
                 }
             });
-            
+
         return images;
     };
 
@@ -159,7 +159,7 @@ export default function UrunlerDetaySayfasi() {
                     <div className="max-w-3xl w-full mx-auto bg-white rounded-xl shadow-xl overflow-hidden border border-blue-100 my-8 p-10 text-center">
                         <h1 className="text-3xl font-bold text-gray-700 mb-4">{t('notfound.title')}</h1>
                         <p className="text-gray-600 mb-6">{t('notfound.message')}</p>
-                        <button 
+                        <button
                             onClick={() => router.push(`/products/${productName}`)}
                             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors duration-300 font-medium"
                         >
@@ -172,8 +172,8 @@ export default function UrunlerDetaySayfasi() {
         );
     }
 
-        
-    
+
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-50 flex flex-col">
@@ -200,126 +200,188 @@ export default function UrunlerDetaySayfasi() {
                         </div>
 
                         <div className="p-6">
-                            <div className="flex flex-col md:flex-row gap-6">
-                                {/* Left column - Product details */}
-                                <div className="flex-1">
-                                    {product.description && (
-                                        <div className="mb-8 p-5 rounded-lg border border-blue-200 shadow-sm">
-                                            <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
-                                                <span className="mr-2"></span>Açıklama
-                                            </h3>
-                                            {product.description && (
-                                                <div className="mb-6">
-                                                    <p className="text-gray-700 leading-relaxed">
-                                                        {product.description?.split('\\n').map((line, index, array) => (
-                                                            <span key={index}>
-                                                                {line}
-                                                                {index < array.length - 1 && <br />}
-                                                            </span>
-                                                        ))}
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    {product.technical && (
-                                        <div className="mb-8 bg-slate-50 p-5 rounded-lg shadow-sm border border-slate-200">
-                                            <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
-                                                <span className="mr-2"></span>Teknik Detaylar
-                                            </h3>
-                                            <p className="text-gray-700 font-mono text-sm bg-white p-4 rounded border border-slate-100">
-                                                {product.technical?.split('\\n').map((line, index, array) => (
-                                                    <span key={index}>
-                                                        {line}
-                                                        {index < array.length - 1 && <br />}
-                                                    </span>
-                                                ))}
-                                            </p>
-                                        </div>
-                                    )}
-
-                                    {product.summary && (
-                                        <div className="mb-8 p-5 rounded-lg border border-blue-200 shadow-sm">
-                                            <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
-                                                <span className="mr-2"></span>Özet
-                                            </h3>
-                                            <p className="text-gray-700 leading-relaxed">
-                                                {product.summary?.split('\\n').map((line, index, array) => (
-                                                    <span key={index}>
-                                                        {line}
-                                                        {index < array.length - 1 && <br />}
-                                                    </span>
-                                                ))}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Right column - Product images */}
-                                <div className="md:w-1/2 lg:w-2/5">
-                                    {product.images ? (
-                                        <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
-                                            {(() => {
-                                                const imageUrls = getImageUrls(product.images);
-                                                if (imageUrls.length === 0) return null;
-
-                                                return (
-                                                    <div className="relative">
-                                                        <img
-                                                            src={imageUrls[currentImageIndex]}
-                                                            alt={`${product.name || 'Ürün görseli'} ${currentImageIndex + 1}`}
-                                                            className="w-full h-auto cursor-pointer object-cover aspect-square"
-                                                            onClick={() => openImageModal(currentImageIndex)}
-                                                        />
-
-                                                        {imageUrls.length > 1 && (
-                                                            <div className="absolute bottom-4 right-4 bg-white/70 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-gray-700 shadow-sm">
-                                                                {currentImageIndex + 1} / {imageUrls.length}
-                                                            </div>
-                                                        )}
+                            {product.description || product.technical || product.summary ? (
+                                <div className="flex flex-col md:flex-row gap-6">
+                                    {/* Left column - Product details */}
+                                    <div className="flex-1">
+                                        {product.description && (
+                                            <div className="mb-8 p-6 rounded-lg border border-blue-200 shadow-sm">
+                                                <h3 className="text-xl font-semibold text-blue-800 mb-4">
+                                                    Açıklama
+                                                </h3>
+                                                {product.description && (
+                                                    <div className="mb-6">
+                                                        <p className="text-gray-700 text-lg leading-relaxed font-sans">
+                                                            {product.description?.split('\\n').map((line, index, array) => (
+                                                                <span key={index}>
+                                                                    {line}
+                                                                    {index < array.length - 1 && <br />}
+                                                                </span>
+                                                            ))}
+                                                        </p>
                                                     </div>
-                                                );
-                                            })()}
+                                                )}
+                                            </div>
+                                        )}
 
-                                            {/* Thumbnail navigation */}
-                                            {(() => {
-                                                const imageUrls = getImageUrls(product.images);
-                                                if (imageUrls.length <= 1) return null;
+                                        {product.technical && (
+                                            <div className="mb-8 bg-white p-6 rounded-lg shadow-sm border border-blue-200">
+                                                <h3 className="text-xl font-semibold text-blue-800 mb-4">
+                                                    Teknik Detaylar
+                                                </h3>
+                                                <p className="text-gray-700 text-lg leading-relaxed font-sans">
+                                                    {product.technical?.split('\\n').map((line, index, array) => (
+                                                        <span key={index}>
+                                                            {line}
+                                                            {index < array.length - 1 && <br />}
+                                                        </span>
+                                                    ))}
+                                                </p>
+                                            </div>
+                                        )}
 
-                                                return (
-                                                    <div className="flex overflow-x-auto p-2 gap-2 bg-gray-50">
-                                                        {imageUrls.map((url, index) => (
-                                                            <div
-                                                                key={index}
-                                                                className={`w-16 h-16 flex-shrink-0 rounded overflow-hidden cursor-pointer border-2 ${
-                                                                    currentImageIndex === index
+                                        {product.summary && (
+                                            <div className="mb-8 p-6 rounded-lg border border-blue-200 shadow-sm">
+                                                <h3 className="text-xl font-semibold text-blue-800 mb-4">
+                                                    Özet
+                                                </h3>
+                                                <p className="text-gray-700 text-lg leading-relaxed font-sans">
+                                                    {product.summary?.split('\\n').map((line, index, array) => (
+                                                        <span key={index}>
+                                                            {line}
+                                                            {index < array.length - 1 && <br />}
+                                                        </span>
+                                                    ))}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Right column - Product images */}
+                                    <div className="md:w-1/2 lg:w-2/5">
+                                        {product.images ? (
+                                            <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                                                {(() => {
+                                                    const imageUrls = getImageUrls(product.images);
+                                                    if (imageUrls.length === 0) return null;
+
+                                                    return (
+                                                        <div className="relative">
+                                                            <img
+                                                                src={imageUrls[currentImageIndex]}
+                                                                alt={`${product.name || 'Ürün görseli'} ${currentImageIndex + 1}`}
+                                                                className="w-full h-auto cursor-pointer object-cover aspect-square"
+                                                                onClick={() => openImageModal(currentImageIndex)}
+                                                            />
+
+                                                            {imageUrls.length > 1 && (
+                                                                <div className="absolute bottom-4 right-4 bg-white/70 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-gray-700 shadow-sm">
+                                                                    {currentImageIndex + 1} / {imageUrls.length}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })()}
+
+                                                {/* Thumbnail navigation */}
+                                                {(() => {
+                                                    const imageUrls = getImageUrls(product.images);
+                                                    if (imageUrls.length <= 1) return null;
+
+                                                    return (
+                                                        <div className="flex overflow-x-auto p-2 gap-2 bg-gray-50">
+                                                            {imageUrls.map((url, index) => (
+                                                                <div
+                                                                    key={index}
+                                                                    className={`w-16 h-16 flex-shrink-0 rounded overflow-hidden cursor-pointer border-2 ${currentImageIndex === index
                                                                         ? 'border-blue-500'
                                                                         : 'border-transparent'
-                                                                }`}
-                                                                onClick={() => setCurrentImageIndex(index)}
-                                                            >
-                                                                <img
-                                                                    src={url}
-                                                                    alt={`${product.name || 'Ürün'} küçük görsel ${index + 1}`}
-                                                                    className="w-full h-full object-cover"
-                                                                />
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                );
-                                            })()}
-                                        </div>
-                                    ) : (
-                                        <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200">
-                                            <p className="text-gray-500 text-sm">Ürün görseli bulunamadı</p>
-                                        </div>
-                                    )}
+                                                                        }`}
+                                                                    onClick={() => setCurrentImageIndex(index)}
+                                                                >
+                                                                    <img
+                                                                        src={url}
+                                                                        alt={`${product.name || 'Ürün'} küçük görsel ${index + 1}`}
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
+                                        ) : (
+                                            <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200">
+                                                <p className="text-gray-500 text-sm">Ürün görseli bulunamadı</p>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <div className="flex justify-center px-4">
+                                    <div className="w-full max-w-[90%]">
+                                        {product.images ? (
+                                            <div className="rounded-lg overflow-hidden shadow-lg border border-gray-200">
+                                                {(() => {
+                                                    const imageUrls = getImageUrls(product.images);
+                                                    if (imageUrls.length === 0) return null;
+
+                                                    return (
+                                                        <div className="relative">
+                                                            <img
+                                                                src={imageUrls[currentImageIndex]}
+                                                                alt={`${product.name || 'Ürün görseli'} ${currentImageIndex + 1}`}
+                                                                className="w-full h-auto cursor-pointer object-cover aspect-square"
+                                                                onClick={() => openImageModal(currentImageIndex)}
+                                                            />
+
+                                                            {imageUrls.length > 1 && (
+                                                                <div className="absolute bottom-4 right-4 bg-white/70 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-gray-700 shadow-sm">
+                                                                    {currentImageIndex + 1} / {imageUrls.length}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                })()}
+
+                                                {/* Thumbnail navigation */}
+                                                {(() => {
+                                                    const imageUrls = getImageUrls(product.images);
+                                                    if (imageUrls.length <= 1) return null;
+
+                                                    return (
+                                                        <div className="flex overflow-x-auto p-2 gap-2 bg-gray-50">
+                                                            {imageUrls.map((url, index) => (
+                                                                <div
+                                                                    key={index}
+                                                                    className={`w-16 h-16 flex-shrink-0 rounded overflow-hidden cursor-pointer border-2 ${currentImageIndex === index
+                                                                        ? 'border-blue-500'
+                                                                        : 'border-transparent'
+                                                                        }`}
+                                                                    onClick={() => setCurrentImageIndex(index)}
+                                                                >
+                                                                    <img
+                                                                        src={url}
+                                                                        alt={`${product.name || 'Ürün'} küçük görsel ${index + 1}`}
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
+                                        ) : (
+                                            <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200">
+                                                <p className="text-gray-500 text-sm">Ürün görseli bulunamadı</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="mt-10 flex justify-end">
-                                <button 
+                                <button
                                     onClick={() => router.push(`/products/${productName}`)}
                                     className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 font-medium"
                                 >

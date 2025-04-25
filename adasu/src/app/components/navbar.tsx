@@ -112,16 +112,12 @@ const ServicesDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
                 <div className="w-2/3 pl-8 border-l border-gray-200">
                     <div className="grid grid-cols-1 gap-3">
                         {servicesToDisplay.map((service, index) => (
-                            <a
+                            <div
                                 key={service}
-                                onClick={() => onProductClick(service)} // Use the current language service name
-                                className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl cursor-pointer"
+                                className="flex items-center py-4 text-gray-600 font-semibold text-2xl"
                             >
                                 <span>{service}</span>
-                                <svg className="ml-2 w-8 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
+                            </div>
                         ))}
                     </div>
                 </div>
