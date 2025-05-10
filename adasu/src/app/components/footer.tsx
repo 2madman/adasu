@@ -9,31 +9,31 @@ import { translations } from '../context/LanguageContext';
 
 // Extend translations with footer specific texts
 Object.assign(translations, {
-  'footer.contact': {
-    tr: 'İletişim Bilgileri',
-    en: 'Contact Information',
-  },
-  'footer.about': {
-    tr: 'Hakkımızda',
-    en: 'About Us',
-  },
-  'footer.about.text': {
-    tr: 'Kaliteli hizmet ve müşteri memnuniyeti odaklı çalışmalarımızla sektörde öncü konumdayız.',
-    en: 'We are a leader in the industry with our quality service and customer satisfaction-focused work.',
-  },
-  'footer.contact.button': {
-    tr: 'Bize Ulaşın',
-    en: 'Contact Us',
-  },
-  'footer.copyright': {
-    tr: 'Tüm hakları saklıdır.',
-    en: 'All rights reserved.',
-  },
+    'footer.contact': {
+        tr: 'İletişim Bilgileri',
+        en: 'Contact Information',
+    },
+    'footer.about': {
+        tr: 'Hakkımızda',
+        en: 'About Us',
+    },
+    'footer.about.text': {
+        tr: 'Kaliteli hizmet ve müşteri memnuniyeti odaklı çalışmalarımızla sektörde öncü konumdayız.',
+        en: 'We are a leader in the industry with our quality service and customer satisfaction-focused work.',
+    },
+    'footer.contact.button': {
+        tr: 'Bize Ulaşın',
+        en: 'Contact Us',
+    },
+    'footer.copyright': {
+        tr: 'Tüm hakları saklıdır.',
+        en: 'All rights reserved.',
+    },
 });
 
 const Footer = () => {
     const { t } = useLanguage();
-    
+
     return (
         <footer className="bg-gray-800 text-white py-8">
             <div className="container mx-auto px-4">
@@ -63,7 +63,7 @@ const Footer = () => {
                                 <div className="mr-3 text-blue-400">
                                     <FaEnvelope size={16} />
                                 </div>
-                                <p>info@adarad.net</p>
+                                <a href="mailto:info@adarad.net" className="hover:underline text-blue-200">info@adarad.net</a>
                             </div>
                         </div>
                     </div>

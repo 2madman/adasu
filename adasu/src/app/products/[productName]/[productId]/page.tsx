@@ -180,14 +180,14 @@ export default function UrunlerDetaySayfasi() {
             <Navbar />
             <div className="flex-grow max-w-5xl mx-auto mt-6">
                 <h1 className="text-3xl font-bold text-blue-700 mb-8 border-b-2 border-blue-300 pb-2 drop-shadow-sm">
-                    Ürün Detayları
+                    {t('product.details.title')}
                 </h1>
 
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <div className="animate-pulse flex flex-col items-center">
                             <div className="h-12 w-12 rounded-full bg-blue-400 mb-4"></div>
-                            <p className="text-blue-600 font-medium">Ürün yükleniyor...</p>
+                            <p className="text-blue-600 font-medium">{t('product.loading')}</p>
                         </div>
                     </div>
                 ) : product ? (
@@ -207,16 +207,18 @@ export default function UrunlerDetaySayfasi() {
                                         {product.description && (
                                             <div className="mb-8 p-6 rounded-lg border border-blue-200 shadow-sm">
                                                 <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                                                    Açıklama
+                                                    {t('product.description')}
                                                 </h3>
                                                 {product.description && (
                                                     <div className="mb-6">
                                                         <p className="text-gray-700 text-lg leading-relaxed font-sans">
                                                             {product.description?.split('\\n').map((line, index, array) => (
-                                                                <span key={index}>
-                                                                    {line}
-                                                                    {index < array.length - 1 && <br />}
-                                                                </span>
+                                                                line.trim() && (
+                                                                    <span key={index} className="block mb-3 last:mb-0">
+                                                                        <span className="text-blue-600 mr-2">•</span>
+                                                                        {line}
+                                                                    </span>
+                                                                )
                                                             ))}
                                                         </p>
                                                     </div>
@@ -227,14 +229,16 @@ export default function UrunlerDetaySayfasi() {
                                         {product.technical && (
                                             <div className="mb-8 bg-white p-6 rounded-lg shadow-sm border border-blue-200">
                                                 <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                                                    Teknik Detaylar
+                                                    {t('product.technical')}
                                                 </h3>
                                                 <p className="text-gray-700 text-lg leading-relaxed font-sans">
                                                     {product.technical?.split('\\n').map((line, index, array) => (
-                                                        <span key={index}>
-                                                            {line}
-                                                            {index < array.length - 1 && <br />}
-                                                        </span>
+                                                        line.trim() && (
+                                                            <span key={index} className="block mb-3 last:mb-0">
+                                                                <span className="text-blue-600 mr-2">•</span>
+                                                                {line}
+                                                            </span>
+                                                        )
                                                     ))}
                                                 </p>
                                             </div>
@@ -243,14 +247,16 @@ export default function UrunlerDetaySayfasi() {
                                         {product.summary && (
                                             <div className="mb-8 p-6 rounded-lg border border-blue-200 shadow-sm">
                                                 <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                                                    Özet
+                                                    {t('product.summary')}
                                                 </h3>
                                                 <p className="text-gray-700 text-lg leading-relaxed font-sans">
                                                     {product.summary?.split('\\n').map((line, index, array) => (
-                                                        <span key={index}>
-                                                            {line}
-                                                            {index < array.length - 1 && <br />}
-                                                        </span>
+                                                        line.trim() && (
+                                                            <span key={index} className="block mb-3 last:mb-0">
+                                                                <span className="text-blue-600 mr-2">•</span>
+                                                                {line}
+                                                            </span>
+                                                        )
                                                     ))}
                                                 </p>
                                             </div>
@@ -312,7 +318,7 @@ export default function UrunlerDetaySayfasi() {
                                             </div>
                                         ) : (
                                             <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200">
-                                                <p className="text-gray-500 text-sm">Ürün görseli bulunamadı</p>
+                                                <p className="text-gray-500 text-sm">{t('product.noImage')}</p>
                                             </div>
                                         )}
                                     </div>
@@ -373,7 +379,7 @@ export default function UrunlerDetaySayfasi() {
                                             </div>
                                         ) : (
                                             <div className="h-64 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200">
-                                                <p className="text-gray-500 text-sm">Ürün görseli bulunamadı</p>
+                                                <p className="text-gray-500 text-sm">{t('product.noImage')}</p>
                                             </div>
                                         )}
                                     </div>

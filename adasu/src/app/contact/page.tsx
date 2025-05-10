@@ -12,7 +12,6 @@ export default function ContactPage() {
         name: '',
         email: '',
         phone: '',
-        subject: '',
         message: '',
     });
 
@@ -20,11 +19,11 @@ export default function ContactPage() {
     useEffect(() => {
         // Only run this effect once on component mount
         const hasBeenRedirected = sessionStorage.getItem('contactPageVisited');
-        
+
         if (!hasBeenRedirected) {
             // Mark that we've visited the page to prevent future redirects
             sessionStorage.setItem('contactPageVisited', 'true');
-            
+
             // If they access /contact directly while having 'en' in localStorage
             // Redirect them to /en/contact for consistency
             if (language === 'en' && typeof window !== 'undefined') {
@@ -34,7 +33,7 @@ export default function ContactPage() {
                 }
             }
         }
-        
+
         // Cleanup function to remove the flag when component unmounts
         return () => {
             // Don't remove the flag as it should persist across page loads
@@ -65,7 +64,6 @@ export default function ContactPage() {
                 name: '',
                 email: '',
                 phone: '',
-                subject: '',
                 message: '',
             });
         } catch (error) {
@@ -204,25 +202,6 @@ export default function ContactPage() {
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                            </div>
-
-                            <div className="mb-4">
-                                <label htmlFor="subject" className="block text-gray-700 font-medium mb-2">{t('contact.form.subject')}</label>
-                                <select
-                                    id="subject"
-                                    name="subject"
-                                    value={formData.subject}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                >
-                                    <option value="">{t('contact.form.select')}</option>
-                                    <option value="Genel Bilgi">{t('contact.form.general')}</option>
-                                    <option value="Ürün Bilgisi">{t('contact.form.product')}</option>
-                                    <option value="Teknik Destek">{t('contact.form.support')}</option>
-                                    <option value="İş Birliği">{t('contact.form.cooperation')}</option>
-                                    <option value="Diğer">{t('contact.form.other')}</option>
-                                </select>
                             </div>
 
                             <div className="mb-6">

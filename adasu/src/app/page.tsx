@@ -5,13 +5,106 @@ import { useState, useEffect } from "react";
 import Navbar from '@/app/components/navbar';
 import Footer from "./components/footer";
 import { useLanguage } from "./context/LanguageContext";
+import { useRouter } from 'next/navigation';
+import { db } from '../../firebase/clientApp';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Anasayfa() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const router = useRouter();
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [productsAnimationClass, setProductsAnimationClass] = useState("opacity-0 -translate-y-4");
   const [servicesAnimationClass, setServicesAnimationClass] = useState("opacity-0 -translate-y-4");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showProductSelect, setShowProductSelect] = useState(false);
+
+  // Title translations
+  const searchTitle = language === 'en'
+    ? 'Our innovative radiation protection solutions'
+    : 'Yenilikçi radyasyon koruma çözümlerimiz';
+
+  // Categories from navbar
+  const categories = language === 'en'
+    ? [
+      { id: 'PHARMACEUTICAL PRODUCTION FACILITIES', name: 'PHARMACEUTICAL PRODUCTION FACILITIES' },
+      { id: 'NUCLEAR MEDICINE', name: 'NUCLEAR MEDICINE' },
+      { id: 'RADIOLOGY', name: 'RADIOLOGY' },
+      { id: 'RADIOTHERAPY', name: 'RADIOTHERAPY' },
+      { id: 'NON-DESTRUCTIVE TESTING', name: 'NON-DESTRUCTIVE TESTING' },
+      { id: 'NUCLEAR RESEARCH FACILITIES', name: 'NUCLEAR RESEARCH FACILITIES' },
+      { id: 'CONSTRUCTION', name: 'CONSTRUCTION' },
+      { id: 'MARINE', name: 'MARINE' },
+      { id: 'METAL AND MINING', name: 'METAL AND MINING' },
+      { id: 'R&D', name: 'R&D' },
+    ]
+    : [
+      { id: 'RADYAFARMASÖTİK ÜRETİM TESİSLERİ', name: 'RADYAFARMASÖTİK ÜRETİM TESİSLERİ' },
+      { id: 'NÜKLEER TIP', name: 'NÜKLEER TIP' },
+      { id: 'RADYOLOJİ', name: 'RADYOLOJİ' },
+      { id: 'RADYOTERAPİ', name: 'RADYOTERAPİ' },
+      { id: 'NDT', name: 'NDT' },
+      { id: 'NÜKLEER VE ARAŞTIRMA TESİSLERİ', name: 'NÜKLEER VE ARAŞTIRMA TESİSLERİ' },
+      { id: 'İNŞAAT', name: 'İNŞAAT' },
+      { id: 'DENİZCİLİK', name: 'DENİZCİLİK' },
+      { id: 'METAL VE MADEN', name: 'METAL VE MADEN' },
+      { id: 'AR-GE', name: 'AR-GE' },
+    ];
+
+  const [products, setProducts] = useState<string[]>([]);
+
+  const handleCategoryChange = async (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setSelectedProduct("");
+    setShowProductSelect(true);
+    // Fetch products for the selected category from Firestore
+    if (categoryId) {
+      const docRef = doc(db, 'pages', categoryId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.products) {
+          const productsList = data.products
+            .replace(/\r\n/g, '\n')
+            .replace(/\\n/g, '\n')
+            .split(/\n+/)
+            .filter(Boolean)
+            .map((p: string) => p.trim());
+          setProducts(productsList);
+        } else {
+          setProducts([]);
+        }
+      } else {
+        setProducts([]);
+      }
+    } else {
+      setProducts([]);
+    }
+  };
+
+  // Slugify for both Turkish and English
+  const convertToSlug = (text: string) => {
+    const turkishChars: Record<string, string> = {
+      'ğ': 'g', 'Ğ': 'G', 'ü': 'u', 'Ü': 'U', 'ş': 's', 'Ş': 'S',
+      'ı': 'i', 'İ': 'I', 'ö': 'o', 'Ö': 'O', 'ç': 'c', 'Ç': 'C'
+    };
+    return text
+      .trim()
+      .toLowerCase()
+      .replace(/[ğĞüÜşŞıİöÖçÇ]/g, match => turkishChars[match] || match)
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  };
+
+  const handleSearch = () => {
+    if (selectedProduct) {
+      router.push(`/products/${encodeURIComponent(selectedCategory)}/${convertToSlug(selectedProduct)}`);
+    } else if (selectedCategory) {
+      router.push(`/products/${encodeURIComponent(selectedCategory)}`);
+    }
+  };
 
   useEffect(() => {
     if (isProductsOpen) {
@@ -45,8 +138,8 @@ export default function Anasayfa() {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       {/* Hero Section */}
-      <div className="bg-gray-200 min-h-screen flex items-center justify-center pt-28">
-        <div className="container mx-auto px-6 py-16 text-center">
+      <div className="bg-gray-200 flex items-start justify-center pt-4 mt-20 min-h-[600px]">
+        <div className="container mx-auto px-6 py-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 leading-tight">
               {t('home.hero.title')}
@@ -60,6 +153,112 @@ export default function Anasayfa() {
             <div className="inline-block border-2 border-blue-500 px-6 py-3 text-lg font-bold text-gray-800">
               {t('home.hero.made')}
             </div>
+            <div className="mt-8 max-w-6xl mx-auto">
+              <div className="bg-white/90 shadow-lg rounded-2xl px-24 py-16 flex flex-col items-center justify-center mb-8 border border-gray-200 w-full">
+                <h2 className="text-2xl md:text-3xl font-bold text-blue-800 mb-4 text-center w-full">{searchTitle}</h2>
+                <div className="w-16 h-1 bg-blue-500 rounded mb-8 mx-auto" />
+                <div className="flex flex-row space-x-8 items-center justify-center w-full">
+                  <select
+                    className="flex-1 min-w-[200px] p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-lg"
+                    value={selectedCategory}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
+                  >
+                    <option value="">{language === 'en' ? 'Select Category' : 'Kategori Seçin'}</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {showProductSelect && (
+                    <select
+                      className="flex-1 min-w-[200px] p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-lg"
+                      value={selectedProduct}
+                      onChange={(e) => setSelectedProduct(e.target.value)}
+                    >
+                      <option value="">{language === 'en' ? 'Select Product' : 'Ürün Seçin'}</option>
+                      {products.map((product) => (
+                        <option key={product} value={product}>
+                          {product}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  <button
+                    onClick={handleSearch}
+                    disabled={!selectedCategory}
+                    className={`flex items-center justify-center min-w-[180px] p-5 rounded-lg font-bold uppercase border-2 transition-colors duration-200 h-[64px] text-lg ${selectedCategory
+                      ? 'bg-transparent border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
+                      : 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
+                      }`}
+                  >
+                    {language === 'en' ? 'Search' : 'Ara'}
+                    <span className="ml-2 text-2xl">&#8594;</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Areas of Expertise Section */}
+      <div className="w-full py-16 bg-gray-100">
+        <div className="container mx-auto px-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-left">
+            {language === 'en' ? 'OUR AREAS OF EXPERTISE' : 'UZMANLIK ALANLARIMIZ'}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {categories.map((category, idx) => (
+              <div key={category.id} className="relative rounded-xl overflow-hidden shadow-lg group min-h-[260px]">
+                <Image
+                  src={idx < 5 ? '/images/logo.png' : '/images/world_map.jpg'}
+                  alt={category.name}
+                  fill
+                  className={idx < 5 ? 'object-contain bg-white group-hover:scale-105 transition-transform duration-300' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
+                />
+                <div className={`absolute inset-0 ${idx % 2 === 0 ? 'bg-cyan-800/80' : 'bg-cyan-700/80'} flex flex-col justify-end p-8`}>
+                  <h3 className="text-white text-xl font-bold mb-2">{category.name}</h3>
+                  <p className="text-white text-sm mb-4">
+                    {/* Example subtitles for each category, you can customize further */}
+                    {language === 'en' ? (
+                      [
+                        'Production, quality control and storage solutions for radiopharmaceuticals.',
+                        'Comprehensive solutions for nuclear medicine departments and radiation protection.',
+                        'Innovative radiology solutions for diagnostic imaging and patient safety.',
+                        'Advanced radiotherapy room design and shielding for safe cancer treatment.',
+                        'Non-destructive testing solutions for industrial applications.',
+                        'Research facility shielding and nuclear safety solutions.',
+                        'Radiation protection for construction and architectural projects.',
+                        'Radiation safety and protection for marine applications.',
+                        'Metal and mining industry radiation protection solutions.',
+                        'Research and development in radiation protection technologies.'
+                      ][idx]
+                    ) : (
+                      [
+                        'Radyofarmasötiklerin üretimi, kalite kontrolü ve depolanması için çözümler.',
+                        'Nükleer tıp departmanları ve radyasyon koruması için kapsamlı çözümler.',
+                        'Tanısal görüntüleme ve hasta güvenliği için yenilikçi radyoloji çözümleri.',
+                        'Güvenli kanser tedavisi için ileri radyoterapi oda tasarımı ve koruma.',
+                        'Endüstriyel uygulamalar için tahribatsız muayene çözümleri.',
+                        'Araştırma tesisleri için koruma ve nükleer güvenlik çözümleri.',
+                        'İnşaat ve mimari projeler için radyasyon koruma çözümleri.',
+                        'Denizcilik uygulamaları için radyasyon güvenliği ve koruma.',
+                        'Metal ve maden endüstrisi için radyasyon koruma çözümleri.',
+                        'Radyasyon koruma teknolojilerinde araştırma ve geliştirme.'
+                      ][idx]
+                    )}
+                  </p>
+                  <button
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition-colors duration-200 w-fit"
+                    onClick={() => router.push(`/products/${encodeURIComponent(category.id)}`)}
+                  >
+                    {language === 'en' ? 'LEARN MORE' : 'DAHA FAZLA'}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

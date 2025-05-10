@@ -276,6 +276,31 @@ export const translations: TranslationsType = {
     tr: 'Ürünlere Dön',
     en: 'Return to Products',
   },
+  // Product Detail Page
+  'product.details.title': {
+    tr: 'Ürün Detayları',
+    en: 'Product Details',
+  },
+  'product.description': {
+    tr: 'Açıklama',
+    en: 'Description',
+  },
+  'product.technical': {
+    tr: 'Teknik Detaylar',
+    en: 'Technical Details',
+  },
+  'product.summary': {
+    tr: 'Özet',
+    en: 'Summary',
+  },
+  'product.noImage': {
+    tr: 'Ürün görseli bulunamadı',
+    en: 'No product image found',
+  },
+  'product.loading': {
+    tr: 'Ürün yükleniyor...',
+    en: 'Loading product...',
+  },
 };
 
 // Language provider component

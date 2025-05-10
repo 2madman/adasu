@@ -41,7 +41,7 @@ const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
             'NUCLEAR RESEARCH FACILITIES',
             'CONSTRUCTION',
             'MARINE',
-            'METAL and MINING',
+            'METAL AND MINING',
             'R&D'
         ]
     };
