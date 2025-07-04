@@ -53,8 +53,8 @@ export const translations: TranslationsType = {
   },
   // Homepage
   'home.hero.title': {
-    tr: 'Tıp, Araştırma, Endüstri ve Nükleer güvenlik alanları için radyasyon koruma çözümleri geliştiriyor, tasarlıyor ve üretiyoruz.',
-    en: 'We develop, design and manufacture radiation protection solutions for the fields of Medicine, Research, Industry and Nuclear Protection.',
+    tr: 'Nükleer Tıp, Araştırma, Endüstri ve Nükleer güvenlik alanları için radyasyon koruma çözümleri geliştiriyor, tasarlıyor ve üretiyoruz.',
+    en: 'We develop, design and manufacture radiation protection solutions for the fields of Nuclear Medicine, Research, Industry and Nuclear Protection.',
   },
   'home.hero.subtitle': {
     tr: '20 yılı aşkın deneyimine dayanan bu zorlu meslekte kapsamlı uzmanlığa sahibiz.',
@@ -65,8 +65,8 @@ export const translations: TranslationsType = {
     en: '"DESIGN, PRODUCE, APPLY"',
   },
   'home.hero.made': {
-    tr: '%100 TÜRKİYE\'DE ÜRETİLDİ',
-    en: '100% MADE IN Türkiye',
+    tr: '%100 Yerli Mühendislik ve Üretim',
+    en: '100% Made In Turkey',
   },
   'home.map.title': {
     tr: 'İhracat Yaptığımız Ülkeler',
@@ -300,6 +300,35 @@ export const translations: TranslationsType = {
   'product.loading': {
     tr: 'Ürün yükleniyor...',
     en: 'Loading product...',
+  },
+  // Media Page
+  'media.title': {
+    tr: 'MEDYA ODASI',
+    en: 'MEDIA ROOM',
+  },
+  'media.subtitle': {
+    tr: 'Röportajlar, makaleler, bilimsel yazılar ve daha fazlası. En güncel haberler burada!',
+    en: 'Interviews, articles, scientific articles, and more. The latest news is here!',
+  },
+  'media.cnrexpomed.title': {
+    tr: 'CNR Expomed 2024',
+    en: 'CNR Expomed 2024',
+  },
+  'media.cnrexpomed.desc': {
+    tr: 'CNR Expomed 2024 fuarındaki standımızdan kareler.',
+    en: 'Photos from our booth at CNR Expomed 2024.',
+  },
+  'media.kibriskongre.title': {
+    tr: '2024 Kıbrıs Nükleer Tıp Kongresi',
+    en: '2024 Cyprus Nuclear Medicine Congress',
+  },
+  'media.kibriskongre.desc': {
+    tr: '2024 Kıbrıs Nükleer Tıp Kongresi etkinliğinden görüntüler.',
+    en: 'Scenes from the 2024 Cyprus Nuclear Medicine Congress.',
+  },
+  'media.readmore': {
+    tr: 'DAHA FAZLA',
+    en: 'READ MORE',
   },
 };
 

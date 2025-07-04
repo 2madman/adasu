@@ -138,28 +138,38 @@ export default function Anasayfa() {
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       {/* Hero Section */}
-      <div className="bg-gray-200 flex items-start justify-center pt-4 mt-20 min-h-[600px]">
-        <div className="container mx-auto px-6 py-4 text-center">
+      <div className="bg-gray-200 flex items-start justify-center pt-4 mt-20 min-h-[600px] relative overflow-hidden">
+        {/* Background Image */}
+        <Image
+          src="/images/main.jpeg"
+          alt="Main Background"
+          fill
+          className="object-cover opacity-30 pointer-events-none select-none z-0"
+          priority
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-white/30 z-10" />
+        <div className="container mx-auto px-6 py-4 text-center relative z-20">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 leading-tight">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-tight">
               {t('home.hero.title')}
             </h2>
-            <p className="text-xl md:text-2xl text-gray-700 mb-10">
+            <p className="text-base md:text-lg text-gray-700 mb-8">
               {t('home.hero.subtitle')}
             </p>
-            <div className="text-2xl md:text-3xl font-bold text-blue-500 mb-6">
+            <div className="text-lg md:text-xl font-bold text-blue-500 mb-4">
               {t('home.hero.motto')}
             </div>
-            <div className="inline-block border-2 border-blue-500 px-6 py-3 text-lg font-bold text-gray-800">
+            <div className="inline-block border-2 border-blue-500 px-4 py-2 text-base font-bold text-gray-800">
               {t('home.hero.made')}
             </div>
-            <div className="mt-8 max-w-6xl mx-auto">
-              <div className="bg-white/90 shadow-lg rounded-2xl px-24 py-16 flex flex-col items-center justify-center mb-8 border border-gray-200 w-full">
-                <h2 className="text-2xl md:text-3xl font-bold text-blue-800 mb-4 text-center w-full">{searchTitle}</h2>
-                <div className="w-16 h-1 bg-blue-500 rounded mb-8 mx-auto" />
-                <div className="flex flex-row space-x-8 items-center justify-center w-full">
+            <div className="mt-6 max-w-6xl mx-auto">
+              <div className="bg-white/90 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-gray-200 w-full">
+                <h2 className="text-lg md:text-xl font-bold text-blue-800 mb-2 text-center w-full">{searchTitle}</h2>
+                <div className="w-10 h-1 bg-blue-500 rounded mb-4 mx-auto" />
+                <div className="flex flex-row space-x-6 items-center justify-center w-full">
                   <select
-                    className="flex-1 min-w-[200px] p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-lg"
+                    className="flex-1 min-w-[160px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-base"
                     value={selectedCategory}
                     onChange={(e) => handleCategoryChange(e.target.value)}
                   >
@@ -173,7 +183,7 @@ export default function Anasayfa() {
 
                   {showProductSelect && (
                     <select
-                      className="flex-1 min-w-[200px] p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-lg"
+                      className="flex-1 min-w-[160px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-base"
                       value={selectedProduct}
                       onChange={(e) => setSelectedProduct(e.target.value)}
                     >
@@ -189,7 +199,7 @@ export default function Anasayfa() {
                   <button
                     onClick={handleSearch}
                     disabled={!selectedCategory}
-                    className={`flex items-center justify-center min-w-[180px] p-5 rounded-lg font-bold uppercase border-2 transition-colors duration-200 h-[64px] text-lg ${selectedCategory
+                    className={`flex items-center justify-center min-w-[140px] p-4 rounded-lg font-bold uppercase border-2 transition-colors duration-200 h-[48px] text-base ${selectedCategory
                       ? 'bg-transparent border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
                       : 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
                       }`}
@@ -204,12 +214,12 @@ export default function Anasayfa() {
         </div>
       </div>
       {/* Areas of Expertise Section */}
-      <div className="w-full py-16 bg-gray-100">
-        <div className="container mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-10 text-left">
+      <div className="w-full py-12 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-6 text-left">
             {language === 'en' ? 'OUR AREAS OF EXPERTISE' : 'UZMANLIK ALANLARIMIZ'}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {categories.map((category, idx) => (
               <div key={category.id} className="relative rounded-xl overflow-hidden shadow-lg group min-h-[260px]">
                 <Image
@@ -218,9 +228,9 @@ export default function Anasayfa() {
                   fill
                   className={idx < 5 ? 'object-contain bg-white group-hover:scale-105 transition-transform duration-300' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
                 />
-                <div className={`absolute inset-0 ${idx % 2 === 0 ? 'bg-cyan-800/80' : 'bg-cyan-700/80'} flex flex-col justify-end p-8`}>
-                  <h3 className="text-white text-xl font-bold mb-2">{category.name}</h3>
-                  <p className="text-white text-sm mb-4">
+                <div className={`absolute inset-0 ${idx % 2 === 0 ? 'bg-cyan-800/80' : 'bg-cyan-700/80'} flex flex-col justify-end p-6`}>
+                  <h3 className="text-white text-base font-bold mb-1">{category.name}</h3>
+                  <p className="text-white text-xs mb-2">
                     {/* Example subtitles for each category, you can customize further */}
                     {language === 'en' ? (
                       [
@@ -251,7 +261,7 @@ export default function Anasayfa() {
                     )}
                   </p>
                   <button
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded transition-colors duration-200 w-fit"
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-4 rounded transition-colors duration-200 w-fit cursor-pointer"
                     onClick={() => router.push(`/products/${encodeURIComponent(category.id)}`)}
                   >
                     {language === 'en' ? 'LEARN MORE' : 'DAHA FAZLA'}
@@ -262,13 +272,70 @@ export default function Anasayfa() {
           </div>
         </div>
       </div>
+      {/* Media Section */}
+      <div className="w-full py-12 bg-white">
+        <div className="container mx-auto px-4 flex flex-col items-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center tracking-tight">{t('media.title')}</h2>
+          <p className="text-lg text-gray-600 mb-10 text-center max-w-2xl">{t('media.subtitle')}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+            {/* CNR Expomed Card */}
+            <div className="group bg-white rounded-2xl shadow-xl border border-gray-200 flex flex-col hover:scale-[1.02] transition-transform duration-200 overflow-hidden">
+              <div className="relative w-full h-40 overflow-hidden">
+                <Image src="/images/cnrexpomed/WhatsApp Image 2025-07-04 at 13.51.36.jpeg" alt="CNR Expomed 2024" fill style={{ objectFit: 'cover' }} className="group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-orange-600 mb-2 group-hover:text-orange-700 transition-colors">{t('media.cnrexpomed.title')}</h3>
+                <p className="text-gray-700 mb-4 flex-1 text-base">{t('media.cnrexpomed.desc')}</p>
+                <div className="flex gap-3 mb-6">
+                  <div className="relative w-24 h-16 rounded-lg overflow-hidden border-2 border-gray-200 group-hover:border-orange-400 transition">
+                    <Image src="/images/cnrexpomed/WhatsApp Image 2025-07-04 at 13.51.36 (1).jpeg" alt="CNR Expomed 2024 2" fill style={{ objectFit: 'cover' }} />
+                  </div>
+                  <div className="relative w-24 h-16 rounded-lg overflow-hidden border-2 border-gray-200 group-hover:border-orange-400 transition">
+                    <Image src="/images/cnrexpomed/WhatsApp Image 2025-07-04 at 13.51.36 (2).jpeg" alt="CNR Expomed 2024 3" fill style={{ objectFit: 'cover' }} />
+                  </div>
+                </div>
+                <button
+                  className="mt-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg shadow transition self-end text-base tracking-wide group-hover:scale-105 group-active:scale-95 cursor-pointer"
+                  onClick={() => router.push('/media/cnrexpomed')}
+                >
+                  {t('media.readmore')}
+                </button>
+              </div>
+            </div>
+            {/* Kıbrıs Kongre Card */}
+            <div className="group bg-white rounded-2xl shadow-xl border border-gray-200 flex flex-col hover:scale-[1.02] transition-transform duration-200 overflow-hidden">
+              <div className="relative w-full h-40 overflow-hidden">
+                <Image src="/images/nükleerkongre/WhatsApp Image 2025-07-04 at 13.51.35.jpeg" alt="2024 Kıbrıs Nükleer Tıp Kongresi" fill style={{ objectFit: 'cover' }} className="group-hover:scale-105 transition-transform duration-300" />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-orange-600 mb-2 group-hover:text-orange-700 transition-colors">{t('media.kibriskongre.title')}</h3>
+                <p className="text-gray-700 mb-4 flex-1 text-base">{t('media.kibriskongre.desc')}</p>
+                <div className="flex gap-3 mb-6">
+                  <div className="relative w-24 h-16 rounded-lg overflow-hidden border-2 border-gray-200 group-hover:border-orange-400 transition">
+                    <Image src="/images/nükleerkongre/WhatsApp Image 2025-07-04 at 13.51.35 (1).jpeg" alt="Kıbrıs Kongre 2024 2" fill style={{ objectFit: 'cover' }} />
+                  </div>
+                  <div className="relative w-24 h-16 rounded-lg overflow-hidden border-2 border-gray-200 group-hover:border-orange-400 transition">
+                    <Image src="/images/nükleerkongre/WhatsApp Image 2025-07-04 at 13.51.36.jpeg" alt="Kıbrıs Kongre 2024 3" fill style={{ objectFit: 'cover' }} />
+                  </div>
+                </div>
+                <button
+                  className="mt-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-8 rounded-lg shadow transition self-end text-base tracking-wide group-hover:scale-105 group-active:scale-95 cursor-pointer"
+                  onClick={() => router.push('/media/kibriskongre')}
+                >
+                  {t('media.readmore')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* World Map Section */}
-      <div className="w-full py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">
+      <div className="w-full py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 text-center mb-8">
             {t('home.map.title')}
           </h2>
-          <div className="relative w-full h-[600px] mb-12">
+          <div className="relative w-full h-[400px] mb-8">
             <Image
               src="/images/world_map.jpg"
               alt="Dünya Haritası"
@@ -277,7 +344,7 @@ export default function Anasayfa() {
               priority
             />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
               'country.france',
               'country.canada',
@@ -293,7 +360,7 @@ export default function Anasayfa() {
             ].map((countryKey, index) => (
               <div
                 key={index}
-                className="bg-white border-2 border-blue-500 px-6 py-4 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 text-center"
+                className="bg-white border-2 border-blue-500 px-4 py-2 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 text-center"
               >
                 <span className="text-blue-600 font-bold text-xl">{t(countryKey)}</span>
               </div>

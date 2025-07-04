@@ -113,7 +113,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-gray-700">{t('contact.phone.label')}</h3>
-                                    <p className="text-gray-600">0262 643 91 96 - 0262 742 01 00</p>
+                                    <p className="text-gray-600">0554 781 03 79 - 0262 643 91 96 - 0262 742 01 00</p>
                                 </div>
                             </div>
 

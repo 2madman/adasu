@@ -54,17 +54,17 @@ const ProductsDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
             className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass}`}
             onMouseLeave={onMouseLeave}
         >
-            <div className="container mx-auto px-4 py-8 flex">
-                <div className="w-2/3 pl-8 border-l border-gray-200">
-                    <div className="grid grid-cols-1 gap-3">
+            <div className="container mx-auto px-2 py-4 flex">
+                <div className="w-2/3 pl-4 border-l border-gray-200">
+                    <div className="grid grid-cols-1 gap-1">
                         {productsToDisplay.map((product, index) => (
                             <a
                                 key={product}
-                                onClick={() => onProductClick(product)} // Use the current language product name
-                                className="flex items-center py-4 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-2xl cursor-pointer"
+                                onClick={() => onProductClick(product)}
+                                className="flex items-center py-2 text-gray-800 hover:text-blue-500 transition-colors font-semibold text-base cursor-pointer"
                             >
                                 <span>{product}</span>
-                                <svg className="ml-2 w-8 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="ml-2 w-6 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </a>
@@ -108,13 +108,13 @@ const ServicesDropdown = ({ isOpen, animationClass, onMouseLeave, onProductClick
             className={`fixed top-20 left-0 right-0 bg-white/95 shadow-lg z-40 h-auto transition-all duration-300 ease-in-out transform ${isOpen ? 'block' : 'hidden'} ${animationClass}`}
             onMouseLeave={onMouseLeave}
         >
-            <div className="container mx-auto px-4 py-8 flex">
-                <div className="w-2/3 pl-8 border-l border-gray-200">
-                    <div className="grid grid-cols-1 gap-3">
+            <div className="container mx-auto px-2 py-4 flex">
+                <div className="w-2/3 pl-4 border-l border-gray-200">
+                    <div className="grid grid-cols-1 gap-1">
                         {servicesToDisplay.map((service, index) => (
                             <div
                                 key={service}
-                                className="flex items-center py-4 text-gray-600 font-semibold text-2xl"
+                                className="flex items-center py-2 text-gray-600 font-semibold text-base"
                             >
                                 <span>{service}</span>
                             </div>
@@ -293,12 +293,12 @@ export default function Navbar() {
                         </div>
 
                         {/* Navigation Links */}
-                        <div className="hidden md:flex items-center space-x-10 pr-8">
+                        <div className="hidden md:flex items-center space-x-8 pr-8">
                             {/* Products dropdown */}
                             <div className="relative">
                                 <a
                                     href="#"
-                                    className="text-lg text-gray-700 hover:text-blue-500 font-bold flex items-center"
+                                    className="text-base text-gray-700 hover:text-blue-500 font-bold flex items-center"
                                     onMouseEnter={() => {
                                         setIsProductsOpen(true);
                                         setIsServicesOpen(false);
@@ -315,7 +315,7 @@ export default function Navbar() {
                             <div className="relative">
                                 <a
                                     href="#"
-                                    className="text-lg text-gray-700 hover:text-blue-500 font-bold flex items-center"
+                                    className="text-base text-gray-700 hover:text-blue-500 font-bold flex items-center"
                                     onMouseEnter={() => {
                                         setIsServicesOpen(true);
                                         setIsProductsOpen(false);
@@ -330,7 +330,7 @@ export default function Navbar() {
 
                             <Link
                                 href={language === 'en' ? '/en/about' : '/about'}
-                                className="text-lg text-gray-700 hover:text-blue-500 font-bold"
+                                className="text-base text-gray-700 hover:text-blue-500 font-bold"
                                 prefetch={false}
                             >
                                 {t('nav.about')}
@@ -338,14 +338,20 @@ export default function Navbar() {
 
                             <Link
                                 href={language === 'en' ? '/en/contact' : '/contact'}
-                                className="text-lg text-gray-700 hover:text-blue-500 font-bold"
+                                className="text-base text-gray-700 hover:text-blue-500 font-bold"
                                 prefetch={false}
                             >
                                 {t('nav.contact')}
                             </Link>
 
-                            <a href="#" className="text-lg text-gray-700 hover:text-blue-500 font-bold">{t('nav.media')}</a>
-                            <a href="#" className="text-lg text-gray-700 hover:text-blue-500 font-bold">{t('nav.documents')}</a>
+                            <Link
+                                href="/media"
+                                className="text-base text-gray-700 hover:text-blue-500 font-bold"
+                                prefetch={false}
+                            >
+                                {t('nav.media')}
+                            </Link>
+                            <a href="#" className="text-base text-gray-700 hover:text-blue-500 font-bold">{t('nav.documents')}</a>
 
                             {/* Language selector */}
                             <div className="relative">
