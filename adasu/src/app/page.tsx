@@ -26,6 +26,16 @@ export default function Anasayfa() {
     ? 'Our innovative radiation protection solutions'
     : 'Yenilikçi radyasyon koruma çözümlerimiz';
 
+  // Video section title
+  const videoTitle = language === 'en'
+    ? 'Discover Our Solutions'
+    : 'Çözümlerimizi Keşfedin';
+
+  // Video section subtitle
+  const videoSubtitle = language === 'en'
+    ? 'Watch our latest video to learn more about our radiation protection solutions'
+    : 'Radyasyon koruma çözümlerimiz hakkında daha fazla bilgi edinmek için videomuzu izleyin';
+
   // Categories from navbar
   const categories = language === 'en'
     ? [
@@ -164,7 +174,7 @@ export default function Anasayfa() {
               {t('home.hero.made')}
             </div>
             <div className="mt-6 max-w-6xl mx-auto">
-              <div className="bg-white/90 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-gray-200 w-full">
+              <div className="bg-white/95 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-blue-200 w-full">
                 <h2 className="text-lg md:text-xl font-bold text-blue-800 mb-2 text-center w-full">{searchTitle}</h2>
                 <div className="w-10 h-1 bg-blue-500 rounded mb-4 mx-auto" />
                 <div className="flex flex-row space-x-6 items-center justify-center w-full">
@@ -213,9 +223,49 @@ export default function Anasayfa() {
           </div>
         </div>
       </div>
-      {/* Areas of Expertise Section */}
+      {/* Video Section */}
       <div className="w-full py-12 bg-gray-100">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
+              {videoTitle}
+            </h2>
+            <p className="text-base text-gray-700 max-w-2xl mx-auto">
+              {videoSubtitle}
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <div className="relative w-full max-w-4xl h-[400px]">
+              <div style={{ padding: '56.25% 0 0 0', position: 'relative', width: '100%', height: '100%' }}>
+                {language === 'en' ? (
+                  <iframe
+                    src="https://player.vimeo.com/video/1099301294?badge=0&autopause=0&player_id=0&app_id=58479"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="720p eng"
+                    allowFullScreen
+                    className="rounded-lg"
+                  ></iframe>
+                ) : (
+                  <iframe
+                    src="https://player.vimeo.com/video/1099302366?badge=0&autopause=0&player_id=0&app_id=58479"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="720p tr"
+                    allowFullScreen
+                    className="rounded-lg"
+                  ></iframe>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Areas of Expertise Section */}
+      <div className="w-full py-12 bg-gray-100">
+        <div className="container mt-12 mx-auto px-4">
           <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-6 text-left">
             {language === 'en' ? 'OUR AREAS OF EXPERTISE' : 'UZMANLIK ALANLARIMIZ'}
           </h2>
@@ -330,7 +380,7 @@ export default function Anasayfa() {
         </div>
       </div>
       {/* World Map Section */}
-      <div className="w-full py-12 bg-white">
+      <div className="w-full py-12 bg-blue-25">
         <div className="container mx-auto px-4">
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 text-center mb-8">
             {t('home.map.title')}

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
-import { FaPhone, FaFax, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaPhone, FaFax, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function ContactPage() {
@@ -109,11 +109,29 @@ export default function ContactPage() {
 
                             <div className="flex items-start">
                                 <div className="mt-1 mr-4 text-blue-500">
+                                    <FaWhatsapp size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold text-gray-700">WhatsApp</h3>
+                                    <a
+                                        href="https://wa.me/905547810379"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="hover:underline hover:text-blue-600 text-gray-600 block"
+                                        title="WhatsApp ile iletişime geçin"
+                                    >
+                                        0554 781 03 79
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start">
+                                <div className="mt-1 mr-4 text-blue-500">
                                     <FaPhone size={20} />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-gray-700">{t('contact.phone.label')}</h3>
-                                    <p className="text-gray-600">0554 781 03 79 - 0262 643 91 96 - 0262 742 01 00</p>
+                                    <p className="text-gray-600">0262 643 91 96 - 0262 742 01 00</p>
                                 </div>
                             </div>
 

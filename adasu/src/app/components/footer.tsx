@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { FaPhone, FaFax, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaPhone, FaFax, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 
 // Add translations to the language context
@@ -49,9 +49,23 @@ const Footer = () => {
                             </div>
                             <div className="flex items-center">
                                 <div className="mr-3 text-blue-400">
+                                    <FaWhatsapp size={16} />
+                                </div>
+                                <a
+                                    href="https://wa.me/905547810379"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:underline hover:text-blue-200 text-white"
+                                    title="WhatsApp ile iletişime geçin"
+                                >
+                                    0554 781 03 79
+                                </a>
+                            </div>
+                            <div className="flex items-center">
+                                <div className="mr-3 text-blue-400">
                                     <FaPhone size={16} />
                                 </div>
-                                <p>0554 781 03 79 - 0262 643 91 96 - 0262 742 01 00</p>
+                                <p>0262 643 91 96 - 0262 742 01 00</p>
                             </div>
                             <div className="flex items-center">
                                 <div className="mr-3 text-blue-400">
