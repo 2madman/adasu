@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../../../firebase/clientApp';
 import { useParams, useRouter } from 'next/navigation';
@@ -28,7 +28,15 @@ export default function UrunlerDetaySayfasi() {
     const router = useRouter();
     const productId = params.productId as string;
     const productName = params.productName as string;
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const prevLanguage = useRef(language);
+
+    useEffect(() => {
+        if (prevLanguage.current !== language) {
+            router.push('/');
+        }
+        prevLanguage.current = language;
+    }, [language, router]);
 
     // Function to get array of image URLs from the imageUrl string
     const getImageUrls = (imageUrlString?: string): string[] => {

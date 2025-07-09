@@ -303,8 +303,8 @@ export const translations: TranslationsType = {
   },
   // Media Page
   'media.title': {
-    tr: 'MEDYA ODASI',
-    en: 'MEDIA ROOM',
+    tr: 'MEDYA',
+    en: 'MEDIA',
   },
   'media.subtitle': {
     tr: 'Röportajlar, makaleler, bilimsel yazılar ve daha fazlası. En güncel haberler burada!',

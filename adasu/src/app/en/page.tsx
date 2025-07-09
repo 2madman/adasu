@@ -11,7 +11,7 @@ export default function EnHomePage() {
   useEffect(() => {
     // Set language to English
     setLanguage('en');
-    
+
     // Add a small delay before redirecting
     setTimeout(() => {
       // Use replace instead of push to avoid adding to history

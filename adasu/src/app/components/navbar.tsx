@@ -293,9 +293,9 @@ export default function Navbar() {
                         </div>
 
                         {/* Navigation Links */}
-                        <div className="hidden md:flex items-center space-x-8 pr-8">
+                        <div className="hidden md:flex items-center pr-8">
                             {/* Products dropdown */}
-                            <div className="relative">
+                            <div className="relative flex items-center">
                                 <a
                                     href="#"
                                     className="text-base text-gray-700 hover:text-blue-500 font-bold flex items-center"
@@ -309,10 +309,9 @@ export default function Navbar() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </a>
+                                <span className="mx-2 text-blue-600 text-xl font-bold select-none">/</span>
                             </div>
-
-                            {/* Services dropdown */}
-                            <div className="relative">
+                            <div className="relative flex items-center">
                                 <a
                                     href="#"
                                     className="text-base text-gray-700 hover:text-blue-500 font-bold flex items-center"
@@ -326,35 +325,49 @@ export default function Navbar() {
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </a>
+                                <span className="mx-2 text-blue-600 text-xl font-bold select-none">/</span>
                             </div>
-
-                            <Link
-                                href={language === 'en' ? '/en/about' : '/about'}
-                                className="text-base text-gray-700 hover:text-blue-500 font-bold"
-                                prefetch={false}
-                            >
-                                {t('nav.about')}
-                            </Link>
-
-                            <Link
-                                href={language === 'en' ? '/en/contact' : '/contact'}
-                                className="text-base text-gray-700 hover:text-blue-500 font-bold"
-                                prefetch={false}
-                            >
-                                {t('nav.contact')}
-                            </Link>
-
-                            <Link
-                                href="/media"
-                                className="text-base text-gray-700 hover:text-blue-500 font-bold"
-                                prefetch={false}
-                            >
-                                {t('nav.media')}
-                            </Link>
-                            <a href="#" className="text-base text-gray-700 hover:text-blue-500 font-bold">{t('nav.documents')}</a>
-
+                            <div className="flex items-center">
+                                <Link
+                                    href={language === 'en' ? '/en/about' : '/about'}
+                                    className="text-base text-gray-700 hover:text-blue-500 font-bold"
+                                    prefetch={false}
+                                >
+                                    {t('nav.about')}
+                                </Link>
+                                <span className="mx-2 text-blue-600 text-xl font-bold select-none">/</span>
+                            </div>
+                            <div className="flex items-center">
+                                <Link
+                                    href={language === 'en' ? '/en/contact' : '/contact'}
+                                    className="text-base text-gray-700 hover:text-blue-500 font-bold"
+                                    prefetch={false}
+                                >
+                                    {t('nav.contact')}
+                                </Link>
+                                <span className="mx-2 text-blue-600 text-xl font-bold select-none">/</span>
+                            </div>
+                            <div className="flex items-center">
+                                <Link
+                                    href="/media"
+                                    className="text-base text-gray-700 hover:text-blue-500 font-bold"
+                                    prefetch={false}
+                                >
+                                    {t('nav.media')}
+                                </Link>
+                                <span className="mx-2 text-blue-600 text-xl font-bold select-none">/</span>
+                            </div>
+                            <div className="flex items-center">
+                                <Link
+                                    href={language === 'en' ? '/en/certificates' : '/certificates'}
+                                    className="text-base text-gray-700 hover:text-blue-500 font-bold"
+                                    prefetch={false}
+                                >
+                                    {t('nav.documents')}
+                                </Link>
+                            </div>
                             {/* Language selector */}
-                            <div className="relative">
+                            <div className="relative ml-4">
                                 <button
                                     onClick={() => setIsLanguageOpen(!isLanguageOpen)}
                                     className="hover:opacity-80 transition-opacity"

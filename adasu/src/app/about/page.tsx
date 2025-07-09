@@ -7,16 +7,16 @@ import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function AboutPage() {
     const { t, language } = useLanguage();
-    
+
     // Handle language-based navigation
     useEffect(() => {
         // Only run this effect once on component mount
         const hasBeenRedirected = sessionStorage.getItem('aboutPageVisited');
-        
+
         if (!hasBeenRedirected) {
             // Mark that we've visited the page to prevent future redirects
             sessionStorage.setItem('aboutPageVisited', 'true');
-            
+
             // If they access /about directly while having 'en' in localStorage
             if (language === 'en' && typeof window !== 'undefined') {
                 const path = window.location.pathname;
@@ -25,7 +25,7 @@ export default function AboutPage() {
                 }
             }
         }
-        
+
         // Cleanup function - we don't remove the flag as it should persist
         return () => {
             // Remove old flags for compatibility
@@ -34,7 +34,7 @@ export default function AboutPage() {
             // Don't remove aboutPageVisited as it should persist
         };
     }, []); // Empty dependency array ensures it only runs once
-    
+
     return (
         <div className="min-h-screen flex flex-col bg-white">
             <Navbar />

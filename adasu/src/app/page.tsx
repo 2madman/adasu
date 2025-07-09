@@ -8,6 +8,68 @@ import { useLanguage } from "./context/LanguageContext";
 import { useRouter } from 'next/navigation';
 import { db } from '../../firebase/clientApp';
 import { doc, getDoc } from 'firebase/firestore';
+import React from 'react';
+
+const certificates = [
+  {
+    name: 'ADASU Makine Çevre İzin Belgesi.pdf',
+    path: '/certificates/ADASU Makine Çevre İzin Belgesi.pdf',
+  },
+  {
+    name: 'EU_Declaration_of_Conformity_Çeker ocak.pdf',
+    path: '/certificates/EU_Declaration_of_Conformity_Çeker ocak.pdf',
+  },
+  {
+    name: 'EU_Declaration_of_Conformity_GALLIUM 68 & LUTESYUM 177 ÇALIŞMA KABİNİ.pdf',
+    path: '/certificates/EU_Declaration_of_Conformity_GALLIUM 68 & LUTESYUM 177 ÇALIŞMA KABİNİ.pdf',
+  },
+  {
+    name: 'EU_Declaration_of_Conformity_Kuru Isıtıcı.pdf',
+    path: '/certificates/EU_Declaration_of_Conformity_Kuru Isıtıcı.pdf',
+  },
+  {
+    name: 'MARKA TESCİL BELGESİ 1.pdf',
+    path: '/certificates/MARKA TESCİL BELGESİ 1.pdf',
+  },
+  {
+    name: 'TS EN 12588 BELGESİ.JPG',
+    path: '/certificates/TS EN 12588 BELGESİ.JPG',
+  },
+  {
+    name: 'UN2915.jpg',
+    path: '/certificates/UN2915.jpg',
+  },
+  {
+    name: 'yerli malı belgesi.pdf',
+    path: '/certificates/yerli malı belgesi.pdf',
+  },
+];
+
+export function CertificatesPage() {
+  const { t, language } = useLanguage();
+  return (
+    <div className="min-h-screen bg-white py-16 px-4">
+      <h1 className="text-2xl font-bold mb-8 text-center">Belgeler ve Sertifikalar</h1>
+      <div className="max-w-2xl mx-auto">
+        <ul className="space-y-4">
+          {certificates.map((cert) => (
+            <li key={cert.name} className="flex items-center justify-between bg-gray-100 rounded-lg p-4 shadow">
+              <span className="truncate font-medium">{cert.name}</span>
+              <a
+                href={cert.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                İndir / Görüntüle
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
 
 export default function Anasayfa() {
   const { t, language } = useLanguage();
@@ -174,12 +236,12 @@ export default function Anasayfa() {
               {t('home.hero.made')}
             </div>
             <div className="mt-6 max-w-6xl mx-auto">
-              <div className="bg-white/95 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-blue-200 w-full">
-                <h2 className="text-lg md:text-xl font-bold text-blue-800 mb-2 text-center w-full">{searchTitle}</h2>
-                <div className="w-10 h-1 bg-blue-500 rounded mb-4 mx-auto" />
+              <div className="bg-red-400 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-red-400 w-full">
+                <h2 className="text-lg md:text-xl font-bold text-red-800 mb-2 text-center w-full">{searchTitle}</h2>
+                <div className="w-10 h-1 bg-red-300 rounded mb-4 mx-auto" />
                 <div className="flex flex-row space-x-6 items-center justify-center w-full">
                   <select
-                    className="flex-1 min-w-[160px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-base"
+                    className="flex-1 min-w-[160px] p-3 border border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-red-200 text-gray-800 font-bold uppercase text-base focus:bg-red-100 hover:bg-red-100 transition-colors duration-200"
                     value={selectedCategory}
                     onChange={(e) => handleCategoryChange(e.target.value)}
                   >
@@ -193,7 +255,7 @@ export default function Anasayfa() {
 
                   {showProductSelect && (
                     <select
-                      className="flex-1 min-w-[160px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800 font-bold uppercase text-base"
+                      className="flex-1 min-w-[160px] p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 bg-red-200 text-gray-800 font-bold uppercase text-base focus:bg-red-100 hover:bg-red-100 transition-colors duration-200"
                       value={selectedProduct}
                       onChange={(e) => setSelectedProduct(e.target.value)}
                     >
@@ -210,7 +272,7 @@ export default function Anasayfa() {
                     onClick={handleSearch}
                     disabled={!selectedCategory}
                     className={`flex items-center justify-center min-w-[140px] p-4 rounded-lg font-bold uppercase border-2 transition-colors duration-200 h-[48px] text-base ${selectedCategory
-                      ? 'bg-transparent border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white'
+                      ? 'bg-red-500 border-red-600 text-white hover:bg-red-600 hover:border-red-700 cursor-pointer'
                       : 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
                       }`}
                   >
@@ -218,46 +280,6 @@ export default function Anasayfa() {
                     <span className="ml-2 text-2xl">&#8594;</span>
                   </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* Video Section */}
-      <div className="w-full py-12 bg-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
-              {videoTitle}
-            </h2>
-            <p className="text-base text-gray-700 max-w-2xl mx-auto">
-              {videoSubtitle}
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <div className="relative w-full max-w-4xl h-[400px]">
-              <div style={{ padding: '56.25% 0 0 0', position: 'relative', width: '100%', height: '100%' }}>
-                {language === 'en' ? (
-                  <iframe
-                    src="https://player.vimeo.com/video/1099301294?badge=0&autopause=0&player_id=0&app_id=58479"
-                    frameBorder="0"
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="720p eng"
-                    allowFullScreen
-                    className="rounded-lg"
-                  ></iframe>
-                ) : (
-                  <iframe
-                    src="https://player.vimeo.com/video/1099302366?badge=0&autopause=0&player_id=0&app_id=58479"
-                    frameBorder="0"
-                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    title="720p tr"
-                    allowFullScreen
-                    className="rounded-lg"
-                  ></iframe>
-                )}
               </div>
             </div>
           </div>
@@ -273,10 +295,10 @@ export default function Anasayfa() {
             {categories.map((category, idx) => (
               <div key={category.id} className="relative rounded-xl overflow-hidden shadow-lg group min-h-[260px]">
                 <Image
-                  src={idx < 5 ? '/images/logo.png' : '/images/world_map.jpg'}
+                  src={'/images/logo.png'}
                   alt={category.name}
                   fill
-                  className={idx < 5 ? 'object-contain bg-white group-hover:scale-105 transition-transform duration-300' : 'object-cover group-hover:scale-105 transition-transform duration-300'}
+                  className={'object-contain bg-white group-hover:scale-105 transition-transform duration-300'}
                 />
                 <div className={`absolute inset-0 ${idx % 2 === 0 ? 'bg-cyan-800/80' : 'bg-cyan-700/80'} flex flex-col justify-end p-6`}>
                   <h3 className="text-white text-base font-bold mb-1">{category.name}</h3>
@@ -322,8 +344,48 @@ export default function Anasayfa() {
           </div>
         </div>
       </div>
+      {/* Video Section */}
+      <div className="w-full py-6 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
+              {videoTitle}
+            </h2>
+            <p className="text-base text-gray-700 max-w-2xl mx-auto">
+              {videoSubtitle}
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <div className="relative w-full max-w-4xl h-[400px]">
+              <div style={{ padding: '56.25% 0 0 0', position: 'relative', width: '100%', height: '100%' }}>
+                {language === 'en' ? (
+                  <iframe
+                    src="https://player.vimeo.com/video/1099301294?badge=0&autopause=0&player_id=0&app_id=58479"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="720p eng"
+                    allowFullScreen
+                    className="rounded-lg"
+                  ></iframe>
+                ) : (
+                  <iframe
+                    src="https://player.vimeo.com/video/1099302366?badge=0&autopause=0&player_id=0&app_id=58479"
+                    frameBorder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    title="720p tr"
+                    allowFullScreen
+                    className="rounded-lg"
+                  ></iframe>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Media Section */}
-      <div className="w-full py-12 bg-white">
+      <div className="w-full py-12 bg-white mt-12 shadow-lg rounded-t-2xl">
         <div className="container mx-auto px-4 flex flex-col items-center">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 text-center tracking-tight">{t('media.title')}</h2>
           <p className="text-lg text-gray-600 mb-10 text-center max-w-2xl">{t('media.subtitle')}</p>
@@ -376,6 +438,59 @@ export default function Anasayfa() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      {/* Certificates Preview Section */}
+      <div className="w-full py-12 bg-blue-50">
+        <div className="container mx-auto px-4 flex flex-col items-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-blue-700 mb-6 text-center">{language === 'en' ? 'Certificates' : 'Belgeler'}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+            {[
+              {
+                path: '/certificates/TS EN 12588 BELGESİ.JPG',
+                name: 'TS EN 12588',
+                explanation: {
+                  tr: 'Kurşun levha standardı belgesi',
+                  en: 'Lead sheet standard certificate',
+                },
+                icon: (
+                  <svg className="w-14 h-14 mb-3 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="64" height="64" rx="12" fill="#F37021" />
+                    <rect x="18" y="16" width="28" height="32" rx="4" fill="#fff" />
+                    <rect x="22" y="24" width="20" height="2.5" rx="1.25" fill="#F37021" />
+                    <rect x="22" y="30" width="20" height="2.5" rx="1.25" fill="#F37021" />
+                    <rect x="22" y="36" width="12" height="2.5" rx="1.25" fill="#F37021" />
+                  </svg>
+                ),
+              },
+              {
+                path: '/certificates/UN2915.jpg',
+                name: 'UN2915',
+                explanation: {
+                  tr: 'Radyoaktif madde taşımacılığı uygunluk belgesi',
+                  en: 'Certificate for radioactive material transport compliance',
+                },
+                icon: (
+                  <svg className="w-14 h-14 mb-3 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="64" height="64" rx="12" fill="#F37021" />
+                    <rect x="16" y="24" width="32" height="16" rx="4" fill="#fff" />
+                    <rect x="20" y="28" width="24" height="8" rx="2" fill="#F37021" />
+                    <rect x="28" y="36" width="8" height="4" rx="2" fill="#F37021" />
+                  </svg>
+                ),
+              },
+            ].map((cert) => (
+              <div key={cert.path} className="flex flex-col items-center justify-center bg-white border border-blue-200 rounded-xl p-6 shadow text-center">
+                {cert.icon}
+                <span className="block font-medium text-lg text-gray-800 w-full mb-0">
+                  {cert.name}
+                </span>
+                <span className="block text-sm text-gray-500 mt-1">
+                  {language === 'en' ? cert.explanation.en : cert.explanation.tr}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

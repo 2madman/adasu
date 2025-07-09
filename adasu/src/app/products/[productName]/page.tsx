@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../../firebase/clientApp';
 import { useParams, useRouter } from 'next/navigation';
@@ -23,6 +23,15 @@ export default function UrunDetaySayfasi() {
     const [productImages, setProductImages] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const prevLanguage = useRef(language);
+
+    useEffect(() => {
+        if (prevLanguage.current !== language) {
+            router.push('/');
+        }
+        prevLanguage.current = language;
+    }, [language, router]);
 
     // Parse and extract base64 image strings
     const parseImages = (imagesString?: string): string[] => {
