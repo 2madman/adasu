@@ -236,12 +236,12 @@ export default function Anasayfa() {
               {t('home.hero.made')}
             </div>
             <div className="mt-6 max-w-6xl mx-auto">
-              <div className="bg-red-400 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-red-400 w-full">
-                <h2 className="text-lg md:text-xl font-bold text-red-800 mb-2 text-center w-full">{searchTitle}</h2>
+              <div className="bg-red-600 shadow-lg rounded-2xl px-12 py-10 flex flex-col items-center justify-center mb-6 border border-red-400 w-full">
+                <h2 className="text-lg md:text-xl font-bold text-white-800 mb-2 text-center w-full">{searchTitle}</h2>
                 <div className="w-10 h-1 bg-red-300 rounded mb-4 mx-auto" />
                 <div className="flex flex-row space-x-6 items-center justify-center w-full">
                   <select
-                    className="flex-1 min-w-[160px] p-3 border border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-red-200 text-gray-800 font-bold uppercase text-base focus:bg-red-100 hover:bg-red-100 transition-colors duration-200"
+                    className="flex-1 min-w-[160px] p-3 border border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-red-100 text-gray-800 font-bold uppercase text-base hover:bg-red-100 transition-colors duration-200"
                     value={selectedCategory}
                     onChange={(e) => handleCategoryChange(e.target.value)}
                   >
@@ -255,7 +255,7 @@ export default function Anasayfa() {
 
                   {showProductSelect && (
                     <select
-                      className="flex-1 min-w-[160px] p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 bg-red-200 text-gray-800 font-bold uppercase text-base focus:bg-red-100 hover:bg-red-100 transition-colors duration-200"
+                      className="flex-1 min-w-[160px] p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400 bg-red-100 text-gray-800 font-bold uppercase text-base focus:bg-red-100 hover:bg-red-100 transition-colors duration-200"
                       value={selectedProduct}
                       onChange={(e) => setSelectedProduct(e.target.value)}
                     >
@@ -271,9 +271,9 @@ export default function Anasayfa() {
                   <button
                     onClick={handleSearch}
                     disabled={!selectedCategory}
-                    className={`flex items-center justify-center min-w-[140px] p-4 rounded-lg font-bold uppercase border-2 transition-colors duration-200 h-[48px] text-base ${selectedCategory
-                      ? 'bg-red-500 border-red-600 text-white hover:bg-red-600 hover:border-red-700 cursor-pointer'
-                      : 'bg-gray-100 border-gray-300 text-gray-400 cursor-not-allowed'
+                    className={`flex items-center justify-center min-w-[140px] p-4 rounded-lg bg-red-100 font-bold uppercase border-2 transition-colors duration-200 h-[48px] text-base ${selectedCategory
+                      ? 'bg-red-100 border-red-600 text-black hover:bg-red-300 hover:border-red-700 cursor-pointer'
+                      : 'bg-red-100 border-gray-300 text-black cursor-not-allowed'
                       }`}
                   >
                     {language === 'en' ? 'Search' : 'Ara'}
@@ -445,7 +445,7 @@ export default function Anasayfa() {
       <div className="w-full py-12 bg-blue-50">
         <div className="container mx-auto px-4 flex flex-col items-center">
           <h2 className="text-2xl md:text-3xl font-bold text-blue-700 mb-6 text-center">{language === 'en' ? 'Certificates' : 'Belgeler'}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-4xl">
             {[
               {
                 path: '/certificates/TS EN 12588 BELGESİ.JPG',
@@ -480,9 +480,43 @@ export default function Anasayfa() {
                   </svg>
                 ),
               },
+              // AB Uygunluk Beyanı
+              {
+                path: '/certificates/EU_Declaration_of_Conformity_Çeker ocak.pdf',
+                name: t('certificate.abdeclaration'),
+                explanation: {
+                  tr: t('certificate.abdeclaration.explanation'),
+                  en: t('certificate.abdeclaration.explanation'),
+                },
+                icon: (
+                  <svg className="w-14 h-14 mb-3 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="64" height="64" rx="12" fill="#F37021" />
+                    <circle cx="32" cy="32" r="16" fill="#fff" />
+                    <rect x="24" y="28" width="16" height="8" rx="2" fill="#F37021" />
+                  </svg>
+                ),
+              },
+              // Marka Tescil Belgesi
+              {
+                path: '/certificates/MARKA TESCİL BELGESİ 1.pdf',
+                name: t('certificate.trademark'),
+                explanation: {
+                  tr: t('certificate.trademark.explanation'),
+                  en: t('certificate.trademark.explanation'),
+                },
+                icon: (
+                  <svg className="w-14 h-14 mb-3 mx-auto" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="64" height="64" rx="12" fill="#F37021" />
+                    <rect x="20" y="20" width="24" height="24" rx="6" fill="#fff" />
+                    <text x="32" y="40" textAnchor="middle" fontSize="18" fill="#F37021" fontFamily="Arial" fontWeight="bold">®</text>
+                  </svg>
+                ),
+              },
             ].map((cert) => (
-              <div key={cert.path} className="flex flex-col items-center justify-center bg-white border border-blue-200 rounded-xl p-6 shadow text-center">
-                {cert.icon}
+              <div key={cert.path} className="flex flex-col items-center justify-start bg-white border border-blue-200 rounded-xl p-6 shadow text-center h-full">
+                <div className="mb-3 flex items-center justify-center w-full">
+                  {cert.icon}
+                </div>
                 <span className="block font-medium text-lg text-gray-800 w-full mb-0">
                   {cert.name}
                 </span>

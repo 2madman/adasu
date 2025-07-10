@@ -39,8 +39,18 @@ export default function AboutPage() {
         <div className="min-h-screen flex flex-col bg-white">
             <Navbar />
 
-            <div className="pt-28 pb-16 bg-gray-100">
-                <div className="container mx-auto px-6">
+            {/* Background Image and Overlay */}
+            <div className="relative pt-28 pb-16 bg-gray-100 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/images/main.jpeg"
+                        alt="About Background"
+                        className="w-full h-full object-cover opacity-30 pointer-events-none select-none"
+                        style={{ position: 'absolute', inset: 0 }}
+                    />
+                    <div className="absolute inset-0 bg-white/30" />
+                </div>
+                <div className="container mx-auto px-6 relative z-10">
                     <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">{t('about.title')}</h1>
 
                     <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">

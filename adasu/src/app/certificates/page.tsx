@@ -12,17 +12,17 @@ const certificates = [
     },
     {
         path: '/certificates/EU_Declaration_of_Conformity_Çeker ocak.pdf',
-        nameTr: 'EU Uygunluk Beyanı (Çeker Ocak)',
+        nameTr: 'AB Uygunluk Beyanı (Çeker Ocak)',
         nameEn: 'EU Declaration of Conformity (Fume Hood)',
     },
     {
         path: '/certificates/EU_Declaration_of_Conformity_GALLIUM 68 & LUTESYUM 177 ÇALIŞMA KABİNİ.pdf',
-        nameTr: 'EU Uygunluk Beyanı (Gallium 68 & Lutesyum 177 Çalışma Kabini)',
+        nameTr: 'AB Uygunluk Beyanı (Gallium 68 & Lutesyum 177 Çalışma Kabini)',
         nameEn: 'EU Declaration of Conformity (Gallium 68 & Lutetium 177 Work Cabinet)',
     },
     {
         path: '/certificates/EU_Declaration_of_Conformity_Kuru Isıtıcı.pdf',
-        nameTr: 'EU Uygunluk Beyanı (Kuru Isıtıcı)',
+        nameTr: 'AB Uygunluk Beyanı (Kuru Isıtıcı)',
         nameEn: 'EU Declaration of Conformity (Dry Heater)',
     },
     {

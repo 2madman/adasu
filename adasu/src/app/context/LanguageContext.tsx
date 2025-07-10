@@ -57,7 +57,7 @@ export const translations: TranslationsType = {
     en: 'We develop, design and manufacture radiation protection solutions for the fields of Nuclear Medicine, Research, Industry and Nuclear Protection.',
   },
   'home.hero.subtitle': {
-    tr: '20 yılı aşkın deneyimine dayanan bu zorlu meslekte kapsamlı uzmanlığa sahibiz.',
+    tr: '20 yılı aşkın deneyime dayanan bu zorlu meslekte kapsamlı uzmanlığa sahibiz.',
     en: 'We have extensive expertise in this challenging profession based on more than 20 years of experience.',
   },
   'home.hero.motto': {
@@ -329,6 +329,23 @@ export const translations: TranslationsType = {
   'media.readmore': {
     tr: 'DAHA FAZLA',
     en: 'READ MORE',
+  },
+  // Certificates
+  'certificate.abdeclaration': {
+    tr: 'AB Uygunluk Beyanı',
+    en: 'EU Declaration of Conformity',
+  },
+  'certificate.abdeclaration.explanation': {
+    tr: 'Ürünlerimizin AB standartlarına uygunluğunu gösteren belge',
+    en: 'Certificate showing our products comply with EU standards',
+  },
+  'certificate.trademark': {
+    tr: 'Marka Tescil Belgesi',
+    en: 'Trademark Registration Certificate',
+  },
+  'certificate.trademark.explanation': {
+    tr: 'Tescilli marka belgesi',
+    en: 'Registered trademark certificate',
   },
 };
 
